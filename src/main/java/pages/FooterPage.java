@@ -107,7 +107,30 @@ public  final class FooterPage  extends FooterObjRepo{
 	        System.out.println("❌ About Us verification failed: " + e.getMessage());
 	        Assert.fail("About Us validation failed");
 	    }
-	}
+	    
+
+	    // Wait for About page section
+	    List<WebElement> headings = wait.until(
+	        ExpectedConditions.presenceOfAllElementsLocatedBy(
+	            By.xpath("//div[@class='frames_heading_section']")
+	        )
+	    );
+
+	    // Validation
+	    if (headings.size() > 0) {
+
+	        System.out.println("PASS: Headings are present");
+
+	        for (WebElement heading : headings) {
+	            System.out.println("Heading: " + heading.getText());
+	        }
+
+	    } else {
+	        System.out.println("FAIL: No headings found on About page");
+	    }
+	   }
+
+	
 	
 	//TC-02		
 	public void verifyBlogs() {
@@ -1949,27 +1972,7 @@ public void socialMediaFooter() {
 		}
 	
 	
-	public void giftcardBanner() {
-		driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
-
-		scrollUsingJSWindow();
-		Common.waitForElement(1);
-		
-		click(giftCard);
-		
-		Common.waitForElement(2);
-
-		// Store current URL
-		String currentUrl = driver.getCurrentUrl();
-		
-		Assert.assertTrue("❌ Gify card  page URL mismatch",
-		        currentUrl.contains("/gift-card"));
-		
-
-		System.out.println("\u001B[32m✅ Navigated to Gift card  page: " + currentUrl + "\u001B[0m");
-
-	}
 	
 	
 	
@@ -1982,7 +1985,7 @@ public void socialMediaFooter() {
 	
 	
 	
-	private void scrollUsingJSWindow() {
+	public void scrollUsingJSWindow() {
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 

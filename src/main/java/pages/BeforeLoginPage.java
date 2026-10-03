@@ -33,6 +33,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 		//type(accessCode, FileReaderManager.getInstance().getJsonReader().getValueFromJson("Access"));
 		System.out.println("Clicked Zlaata india to the Shop Now Button");
 		click(zlaataIndiaShopButton);
+		Common.waitForElement(10);
 
 	}
 
@@ -299,7 +300,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 			// Hover on Shop Menu
 			WebElement shopMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(
-					By.xpath("//span[@class='header_nav_link ']")));
+					By.xpath("//div[@class='header_nav_item has_dropdown shop']")));
 			actions.moveToElement(shopMenu).perform();
 			System.out.println(YELLOW + "➡ Hovered on Shop menu" + RESET);
 
@@ -440,7 +441,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 	private static final String YELLOW = "\u001B[33m";
 	private static final String CYAN = "\u001B[36m";
-
+	private static final String BLUE = "\u001B[34m";
 	private static final String GREEN = "\u001B[32m";
 	private static final String RED = "\u001B[31m";
 	private static final String RESET = "\u001B[0m";
@@ -546,13 +547,13 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 		// Open cart
 		driver.findElement(By.xpath("//button[@class='header_cta_btn Cls_cart_btn ']")).click();
-		Common.waitForElement(1);
+		Common.waitForElement(10);
 
 
 		// ✅ STEP 1: Check if cart is already empty
 		try {
 
-			if (driver.findElement(By.xpath("//*[contains(text(),'Your bag is empty')]")).isDisplayed()) {
+			if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
 
 				System.out.println(GREEN + 
 						"🛍️ Cart already empty. No delete action needed."
@@ -576,7 +577,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 			// Check cart empty before finding delete button
 			try {
 
-				if (driver.findElement(By.xpath("//*[contains(text(),'Your bag is empty')]")).isDisplayed()) {
+				if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
 
 					System.out.println(GREEN +
 							"🛍️ Cart is empty. All products deleted."
@@ -630,7 +631,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 		// ✅ STEP 3: Final confirmation
 		try {
 
-			if (driver.findElement(By.xpath("//*[contains(text(),'Your bag is empty')]")).isDisplayed()) {
+			if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
 
 				System.out.println(GREEN +
 						"🛍️ Cart is empty, Continue Shopping displayed."
@@ -654,7 +655,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 		// Hover on Shop Menu
 		WebElement shopMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(
-				By.xpath("//div[@class='header_nav_item has_dropdown']")));
+				By.xpath("//div[@class='header_nav_item has_dropdown shop']")));
 		actions.moveToElement(shopMenu).perform();
 
 		// Click Dresses
@@ -758,7 +759,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 		cartButton.click();
 
-		Common.waitForElement(2);
+		Common.waitForElement(10);
 
 		System.out.println(GREEN + "==================================================" + RESET);
 		System.out.println(GREEN + "🛒 Product added to Cart successfully." + RESET);
@@ -792,7 +793,8 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 			wait.until(ExpectedConditions.elementToBeClickable(
 					By.xpath("//button[@class='header_cta_btn Cls_cart_btn ']")))
 			.click();
-
+			
+			Common.waitForElement(10);			
 			System.out.println(YELLOW + "➡ Cart page opened successfully." + RESET);
 
 
@@ -847,7 +849,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 			System.out.println(YELLOW + "➡ Cart page opened successfully." + RESET);
 
-			Common.waitForElement(2);
+			Common.waitForElement(10);
 
 			// Click Wishlist Button
 			wait.until(ExpectedConditions.elementToBeClickable(checkouPageWishlistButton))
@@ -895,7 +897,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 			System.out.println(YELLOW + "➡ Cart page opened successfully." + RESET);
 
-			Common.waitForElement(2);
+			Common.waitForElement(10);
 
 			// Click Apply Button
 			wait.until(ExpectedConditions.elementToBeClickable(applyButtonOnCheckoutPage))
@@ -945,6 +947,8 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 			wait.until(ExpectedConditions.elementToBeClickable(
 					By.xpath("//button[@class='header_cta_btn Cls_cart_btn ']")))
 			.click();
+			
+			Common.waitForElement(10);
 
 			System.out.println(YELLOW + "➡ Cart page opened successfully." + RESET);
 
@@ -995,7 +999,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 			System.out.println(YELLOW + "➡ Cart page opened" + RESET);
 
-			Common.waitForElement(2);
+			Common.waitForElement(10);
 
 			// Enter Thread Value
 			wait.until(ExpectedConditions.visibilityOf(threadTextBox));
@@ -1048,7 +1052,162 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 
 
+	public void verifyOutOfStockProductAvailable() {
 
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	    Actions actions = new Actions(driver);
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+
+	    driver.get(FileReaderManager.getInstance()
+	            .getConfigReader()
+	            .getApplicationUrl());
+
+	    System.out.println(CYAN + "══════════════ Verify Out Of Stock Product ══════════════" + RESET);
+
+	    clickOnBossladyShopNowButton.click();
+	    Common.waitForElement(5);
+
+	    // Hover on Shop
+	    WebElement shopMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	            By.xpath("//div[@class='header_nav_item has_dropdown shop']")));
+
+	    actions.moveToElement(shopMenu).perform();
+
+	    // Click All
+	    WebElement allButton = wait.until(ExpectedConditions.elementToBeClickable(
+	            By.xpath("//a[normalize-space()='All']")));
+
+	    allButton.click();
+
+	    Common.waitForElement(5);
+
+	    boolean productClicked = false;
+
+	    while (true) {
+
+	        System.out.println(BLUE + "🔍 Checking current page..." + RESET);
+
+	        // Check Out of Stock product
+	        List<WebElement> outOfStockProducts = driver.findElements(
+	                By.xpath("//span[contains(normalize-space(),'Out of Stock')]")
+	        );
+
+	        if (!outOfStockProducts.isEmpty()) {
+
+	            System.out.println(GREEN + "✅ Out of Stock product available on current page." + RESET);
+
+	            // Get all product cards
+	            List<WebElement> productCards = driver.findElements(
+	                    By.xpath("//div[@class='prod_listing_card']")
+	            );
+
+	            for (WebElement productCard : productCards) {
+
+	                // Check Out of Stock inside same product card
+	                List<WebElement> stockLabel = productCard.findElements(
+	                        By.xpath(".//span[contains(normalize-space(),'Out of Stock')]")
+	                );
+
+	                if (!stockLabel.isEmpty()) {
+
+	                    // Get product name
+	                    WebElement productNameElement = productCard.findElement(
+	                            By.xpath(".//a[contains(@class,'product_list_name')]")
+	                    );
+
+	                    String productName = productNameElement.getText().trim();
+
+	                    System.out.println(YELLOW + "📦 Out of Stock Product Name : " + productName + RESET);
+
+	                    // Scroll to product
+	                    js.executeScript(
+	                            "arguments[0].scrollIntoView({block:'center'});",
+	                            productNameElement
+	                    );
+
+	                    Common.waitForElement(2);
+
+	                    // Click Out of Stock Product
+	                    js.executeScript(
+	                            "arguments[0].click();",
+	                            productNameElement
+	                    );
+
+	                    Common.waitForElement(5);
+
+	                    System.out.println(GREEN + "✅ Clicked Out of Stock Product : " + productName + RESET);
+
+	                    // Click Notify Me button
+	                    WebElement notifyButton = wait.until(ExpectedConditions.elementToBeClickable(
+	                            By.xpath("//button[@class='prod_no_stock_btn btn___2 cls_add_notify']")
+	                    ));
+
+	                    System.out.println(BLUE + "🔔 Clicking Notify Me button..." + RESET);
+
+	                    js.executeScript(
+	                            "arguments[0].click();",
+	                            notifyButton
+	                    );
+
+	                    Common.waitForElement(3);
+
+	                    // Verify Login Popup
+	                    verifyLoginPopup("Notify button");
+	                    
+	                    Common.waitForElement(5);
+
+	                    System.out.println(GREEN + "✅ Login popup displayed successfully." + RESET);
+	                    System.out.println(CYAN + "══════════════ TEST PASSED ══════════════" + RESET);
+
+	                    productClicked = true;
+	                    break;
+	                }
+	            }
+	        }
+
+	        // Stop after clicking product
+	        if (productClicked) {
+	            break;
+	        }
+
+	        System.out.println(YELLOW + "⚠️ No Out of Stock product on this page." + RESET);
+
+	        // Scroll to pagination
+	        WebElement pagination = wait.until(
+	                ExpectedConditions.visibilityOfElementLocated(
+	                        By.xpath("//div[@class='pagination_wrap']")
+	                ));
+
+	        js.executeScript(
+	                "arguments[0].scrollIntoView({block:'center'});",
+	                pagination
+	        );
+
+	        Common.waitForElement(2);
+
+	        // Click Next page
+	        List<WebElement> nextButton = driver.findElements(
+	                By.xpath("//a[contains(@class,'next')]")
+	        );
+
+	        if (nextButton.isEmpty()) {
+
+	            System.out.println(RED + "❌ Last page reached. No Out of Stock product found." + RESET);
+	            break;
+	        }
+
+	        System.out.println(BLUE + "➡ Navigating to next page..." + RESET);
+
+	        js.executeScript(
+	                "arguments[0].click();",
+	                nextButton.get(0)
+	        );
+
+	        Common.waitForElement(5);
+	    }
+
+	    System.out.println(CYAN + "══════════════ Verification Completed ══════════════" + RESET);
+	}
 
 
 

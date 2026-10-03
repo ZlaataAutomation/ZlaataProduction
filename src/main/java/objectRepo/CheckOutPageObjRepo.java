@@ -17,7 +17,7 @@ public abstract class CheckOutPageObjRepo extends BasePage {
 	@FindBy(xpath ="//button[.='Buy Now']")
 	protected WebElement buyNowButton;
 
-	@FindBy(xpath = "//div[@class='header_nav_item has_dropdown']")
+	@FindBy(xpath = "//div[@class='header_nav_item has_dropdown shop']")
 	protected WebElement shopMenu;
 
 

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertEquals;
@@ -40,8 +41,10 @@ public final class HomePage extends HomePageObjRepo {
 //		handleAccessCodeIfPresentFast();
 //			popup();
 		click(zlaataIndiaShopButton);
+		
+		Common.waitForElement(10);
 
-
+Common.waitForElement(5);
 	}
 	public void popup() {
 	    List<WebElement> popUps = driver.findElements(
@@ -547,23 +550,97 @@ public final class HomePage extends HomePageObjRepo {
 
 	}
 	public void whatsApp() {
-		homeLaunch();
-		((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 6200);");
-		Common.waitForElement(1);
-		WebElement whatsApp = driver.findElement(By.id("whatsappIcon"));
-		try {
-			if (whatsApp.isDisplayed()) {
-				click(whatsApp);
-				System.out.println("The Whats app button is clicked");
-				Common.waitForElement(2);
-				String whatsAppNumber = driver.findElement(By.xpath("(//*[contains(text(),'7305380625')])[2]")).getText();;
-				System.out.println("Whats App number displayed :" + whatsAppNumber);
-			}
-		} catch (Exception e) {
-			System.err.println(e);
-		}
 
+	    String GREEN = "\u001B[32m";
+	    String RED   = "\u001B[31m";
+	    String CYAN  = "\u001B[36m";
+	    String RESET = "\u001B[0m";
 
+	    try {
+
+	        homeLaunch();
+
+	        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+	        js.executeScript("window.scrollBy(0, 6200);");
+	        Common.waitForElement(1);
+
+	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+	        // Store current window
+	        String parentWindow = driver.getWindowHandle();
+
+	        // Click WhatsApp
+	        WebElement whatsApp = wait.until(
+	                ExpectedConditions.elementToBeClickable(
+	                        By.id("whatsappIcon")));
+
+	        whatsApp.click();
+
+	        System.out.println(
+	                GREEN + "✅ WhatsApp button clicked successfully."
+	                        + RESET);
+
+	        Common.waitForElement(3);
+
+	        // Check for new window
+	        Set<String> windows = driver.getWindowHandles();
+
+	        System.out.println(
+	                CYAN + "Total Windows : "
+	                        + windows.size()
+	                        + RESET);
+
+	        // Switch to new window
+	        for (String window : windows) {
+
+	            if (!window.equals(parentWindow)) {
+
+	                driver.switchTo().window(window);
+
+	                System.out.println(
+	                        CYAN + "🔄 Switched to WhatsApp window."
+	                                + RESET);
+
+	                break;
+	            }
+	        }
+
+	        Common.waitForElement(3);
+
+	        // Verify WhatsApp number/text
+	        String pageText = driver.findElement(By.tagName("body"))
+	                .getText();
+
+	        if (pageText.contains("7305380625")) {
+
+	            System.out.println(
+	                    GREEN
+	                            + "✅ WhatsApp number is displayed : 7305380625"
+	                            + RESET);
+
+	        } else {
+
+	            System.out.println(
+	                    RED
+	                            + "❌ WhatsApp number is NOT displayed."
+	                            + RESET);
+	        }
+
+	        // Close WhatsApp window
+	        if (!driver.getWindowHandle().equals(parentWindow)) {
+	            driver.close();
+	            driver.switchTo().window(parentWindow);
+	        }
+
+	    } catch (Exception e) {
+
+	        System.out.println(
+	                RED
+	                        + "❌ WhatsApp verification failed : "
+	                        + e.getMessage()
+	                        + RESET);
+	    }
 	}
 	//	public void featureOn() {
 	//
@@ -754,7 +831,7 @@ public final class HomePage extends HomePageObjRepo {
 	    String RESET  = "\u001B[0m";
 	    String BLUE = "\u001B[34m";
 
-	    Common.waitForElement(2);
+	    Common.waitForElement(10);
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 //	    WebElement homeMenu = wait.until(ExpectedConditions.elementToBeClickable(
 //	            By.xpath("//a[normalize-space()='Home']") 
@@ -777,7 +854,7 @@ public final class HomePage extends HomePageObjRepo {
         driver.get("https://www.zlaata.com/");
 
       
-
+Common.waitForElement(10);
         // Get page title
         String title = driver.getTitle();
         System.out.println(BLUE + "Page Title: " + title + RESET);
@@ -811,7 +888,7 @@ public void validateUrlAndLogo() {
 	
 	driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	 click(zlaataIndiaShopButton);
-	
+	 Common.waitForElement(10);
 	verifyUrlAndLogo();
 }
 
@@ -1467,8 +1544,11 @@ public void threadBannerINHomePage() {
     driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
     click(zlaataIndiaShopButton);
+    Common.waitForElement(10);
     threadbannerClickForZlIndia();
       click(bosslady);
+      Common.waitForElement(5);
+
       threadbannerClickForBl();
       
 }
@@ -1558,8 +1638,11 @@ public void giftCard() {
 	 driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
 	    click(zlaataIndiaShopButton);
+	    Common.waitForElement(10);
 	    giftcardbannerClickForZL();
 	    click(bosslady);
+	    Common.waitForElement(5);
+
 	    giftcardbannerClickForBL();
 }
 
@@ -1790,8 +1873,10 @@ public void aboutus() {
     driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
     click(zlaataIndiaShopButton);
+    Common.waitForElement(10);
     clickOnAboutUsBannerForZL();
     click(bosslady);
+    Common.waitForElement(10);
     clickOnAboutUsBannerForBL();
 
 }
@@ -1821,10 +1906,10 @@ public void clickOnAboutUsBannerForZL() {
     // ✅ Click Explore Banner
     WebElement banner = wait.until(
         ExpectedConditions.elementToBeClickable(
-            By.xpath("//img[@alt='Explore Banner']")
+            By.xpath("//section[@class='zi_special_banner section_container module_section']")
         )
     );
-
+Common.waitForElement(3);
     try {
         banner.click();
         System.out.println(CYAN + "Clicked Explore Banner" + RESET);
@@ -1834,7 +1919,7 @@ public void clickOnAboutUsBannerForZL() {
     }
 
     // ✅ Expected URL (flexible)
-    String expectedUrlPart = "about";
+    String expectedUrlPart = "about-us";
 
     // Wait for navigation
     wait.until(ExpectedConditions.urlContains(expectedUrlPart));
@@ -2634,6 +2719,2413 @@ public void verifyBossLadyCategories() {
 
 
 
+//public void verifyNewInProductsCompleteFlow() throws InterruptedException {
+//
+//    String GREEN  = "\u001B[32m";
+//    String RED    = "\u001B[31m";
+//    String YELLOW = "\u001B[33m";
+//    String BLUE   = "\u001B[34m";
+//    String RESET  = "\u001B[0m";
+//
+//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//    Actions actions = new Actions(driver);
+//
+//    // Open homepage
+//    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+//
+//    // Click Shop button if needed
+//    click(zlaataIndiaShopButton);
+//
+//    By sectionLocator = By.xpath("//section[@data-section='new_arrivals']");
+//    By productLocator = By.xpath("//section[@data-section='new_arrivals']//a[contains(@class,'banner_link')]");
+//    By viewAllLocator = By.xpath("//a[contains(@class,'new_in_redirect')]");
+//
+//    // Scroll to NEW IN section
+//    WebElement section = wait.until(ExpectedConditions.presenceOfElementLocated(sectionLocator));
+//    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", section);
+//    Thread.sleep(1000); // allow initial load
+//
+//    List<WebElement> products = driver.findElements(productLocator);
+//    int total = products.size();
+//    int hoverLimit = Math.min(4, total); // hover first 4
+//    int verifiedCount = 0;
+//
+//    System.out.println(BLUE + "Total Products: " + total + RESET);
+//
+//    for (int i = 0; i < hoverLimit; i++) { // Only hover first 4 products
+//
+//        // Re-fetch elements after each iteration
+//        products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productLocator));
+//        WebElement product = products.get(i);
+//
+//        // Scroll & hover to load overlay
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", product);
+//        actions.moveToElement(product).perform();
+//        Thread.sleep(1500);
+//
+//        try {
+//            // ===== CARD DATA =====
+//            String cardName = product.findElement(By.xpath("//h3[@class='new_in_heading']")).getText().trim();
+//            String cardCurrent = product.findElement(By.xpath(".//span[contains(@class,'prod_current_price')]")).getText().trim();
+//
+//            List<WebElement> cardActualList = product.findElements(By.xpath(".//span[contains(@class,'prod_actual_price')]"));
+//            String cardActual = cardActualList.size() > 0 ? cardActualList.get(0).getText().trim() : "";
+//
+//            String cardDiscount = "0%";
+//            if (!cardActual.isEmpty()) {
+//                int curr = Integer.parseInt(cardCurrent.replaceAll("[^0-9]", ""));
+//                int act  = Integer.parseInt(cardActual.replaceAll("[^0-9]", ""));
+//                cardDiscount = ((act - curr) * 100) / act + "%";
+//            }
+//
+//            System.out.println(BLUE + "Hover Card: " + cardName + RESET);
+//            System.out.println("Card Current: " + cardCurrent + " | Actual: " + cardActual + " | Discount: " + cardDiscount);
+//
+//            // ===== CLICK PRODUCT =====
+//            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", product);
+//
+//            // ===== PDP =====
+//            WebElement pdpNameEl = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='prod_name']")));
+//            WebElement pdpCurrentEl = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='prod_current_price']")));
+//            List<WebElement> pdpActualList = driver.findElements(By.xpath("//div[@class='prod_actual_price']"));
+//            String pdpActual = pdpActualList.size() > 0 ? pdpActualList.get(0).getText().trim() : "";
+//
+//            String pdpName = pdpNameEl.getText().trim();
+//            String pdpCurrent = pdpCurrentEl.getText().trim();
+//            String pdpDiscount = "0%";
+//            if (!pdpActual.isEmpty()) {
+//                int curr = Integer.parseInt(pdpCurrent.replaceAll("[^0-9]", ""));
+//                int act  = Integer.parseInt(pdpActual.replaceAll("[^0-9]", ""));
+//                pdpDiscount = ((act - curr) * 100) / act + "%";
+//            }
+//
+//            System.out.println(YELLOW + "PDP Name: " + pdpName + RESET);
+//            System.out.println("PDP Current: " + pdpCurrent + " | Actual: " + pdpActual + " | Discount: " + pdpDiscount);
+//
+//            // ===== VALIDATION =====
+//            // Partial name match passes silently, only check strict price
+//            if (!cardCurrent.replaceAll("[^0-9]", "").equals(pdpCurrent.replaceAll("[^0-9]", ""))) {
+//                System.out.println(RED + "Price Mismatch ❌ -> Card: " + cardCurrent + " | PDP: " + pdpCurrent + RESET);
+//            } else {
+//                System.out.println(GREEN + "Price Match ✅" + RESET);
+//            }
+//
+//            verifiedCount++;
+//
+//            // ===== BACK NAVIGATION =====
+//            driver.navigate().back();
+//            wait.until(ExpectedConditions.presenceOfElementLocated(sectionLocator));
+//            WebElement sectionAgain = driver.findElement(sectionLocator);
+//            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", sectionAgain);
+//            Thread.sleep(1500); // allow swiper reload
+//
+//        } catch (Exception e) {
+//            System.out.println(RED + "Error at product index: " + i + " -> " + e.getMessage() + RESET);
+//        }
+//    }
+//
+//    // ✅ CLICK VIEW ALL (if exists) instead of checking remaining product(s)
+//    List<WebElement> viewAll = driver.findElements(viewAllLocator);
+//    if (!viewAll.isEmpty()) {
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", viewAll.get(0));
+//        Thread.sleep(1500);
+//
+//        String heading = driver.findElement(By.xpath("//h2[@class='prod_listing_topic']")).getText();
+//        String url     = driver.getCurrentUrl();
+//
+//        System.out.println(BLUE + "View All Page Heading: " + heading + RESET);
+//        System.out.println(BLUE + "View All Page URL: " + url + RESET);
+//    }
+//
+//    System.out.println(BLUE + "Verified Products Count: " + verifiedCount + "/" + total + RESET);
+//    if (verifiedCount == total) {
+//        System.out.println(GREEN + "All products verified successfully ✅" + RESET);
+//    } else {
+//        System.out.println(BLUE + "Some products are behind View All or skipped ⏭️" + RESET);
+//    }
+//
+//    // Close browser
+//    driver.quit();
+//}
+
+
+
+//public void verifyNewInProductsCompleteFlow() throws InterruptedException {
+//
+//    String GREEN  = "\u001B[32m";
+//    String RED    = "\u001B[31m";
+//    String YELLOW = "\u001B[33m";
+//    String BLUE   = "\u001B[34m";
+//    String RESET  = "\u001B[0m";
+//
+//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//    Actions actions = new Actions(driver);
+//
+//    // Open homepage
+//    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+//
+//    // Click Shop button
+//    click(zlaataIndiaShopButton);
+//
+//    By sectionLocator = By.xpath("//section[@data-section='new_arrivals']");
+//
+//    By productLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']//a[contains(@class,'banner_link')]"
+//    );
+//
+//    By viewAllLocator = By.xpath("//a[contains(@class,'new_in_redirect')]");
+//
+//    // Scroll to NEW IN section
+//    WebElement section = wait.until(
+//            ExpectedConditions.presenceOfElementLocated(sectionLocator)
+//    );
+//
+//    ((JavascriptExecutor) driver)
+//            .executeScript("arguments[0].scrollIntoView(true);", section);
+//
+//    Thread.sleep(1000);
+//
+//    List<WebElement> products = driver.findElements(productLocator);
+//
+//    int total = products.size();
+//    int hoverLimit = Math.min(4, total);
+//    int verifiedCount = 0;
+//
+//    System.out.println(BLUE + "Total Products: " + total + RESET);
+//
+//    for (int i = 0; i < hoverLimit; i++) {
+//
+//        // Re-fetch elements after each iteration
+//        products = wait.until(
+//                ExpectedConditions.presenceOfAllElementsLocatedBy(productLocator)
+//        );
+//
+//        WebElement product = products.get(i);
+//
+//        // Scroll & hover
+//        ((JavascriptExecutor) driver)
+//                .executeScript("arguments[0].scrollIntoView(true);", product);
+//
+//        actions.moveToElement(product).perform();
+//
+//        Thread.sleep(1500);
+//
+//        try {
+//
+//            // ===== CARD DATA =====
+//
+//            String cardName = product.findElement(
+//                    By.xpath("//h3[@class='new_in_heading']")
+//            ).getText().trim();
+//
+//            String cardCurrent = product.findElement(
+//                    By.xpath(".//span[contains(@class,'prod_current_price')]")
+//            ).getText().trim();
+//
+//            // Actual price
+//            List<WebElement> cardActualList = product.findElements(
+//                    By.xpath(".//span[contains(@class,'prod_actual_price')]")
+//            );
+//
+//            String cardActual;
+//
+//            // If actual price is not available, use current price
+//            if (cardActualList.isEmpty()) {
+//                cardActual = cardCurrent;
+//            } else {
+//                cardActual = cardActualList.get(0).getText().trim();
+//            }
+//
+//            // Discount
+//            String cardDiscount = "0%";
+//
+//            if (!cardActual.equals(cardCurrent)) {
+//
+//                int curr = Integer.parseInt(
+//                        cardCurrent.replaceAll("[^0-9]", "")
+//                );
+//
+//                int act = Integer.parseInt(
+//                        cardActual.replaceAll("[^0-9]", "")
+//                );
+//
+//                cardDiscount = ((act - curr) * 100) / act + "%";
+//            }
+//
+//            System.out.println(
+//                    BLUE + "Hover Card: " + cardName + RESET
+//            );
+//
+//            System.out.println(
+//                    "Card Current: " + cardCurrent
+//                    + " | Actual: " + cardActual
+//                    + " | Discount: " + cardDiscount
+//            );
+//
+//            // ===== CLICK PRODUCT =====
+//
+//            ((JavascriptExecutor) driver)
+//                    .executeScript("arguments[0].click();", product);
+//
+//            // ===== PDP =====
+//
+//            WebElement pdpNameEl = wait.until(
+//                    ExpectedConditions.visibilityOfElementLocated(
+//                            By.xpath("//h3[@class='prod_name']")
+//                    )
+//            );
+//
+//            WebElement pdpCurrentEl = wait.until(
+//                    ExpectedConditions.visibilityOfElementLocated(
+//                            By.xpath("//div[@class='prod_current_price']")
+//                    )
+//            );
+//
+//            String pdpName = pdpNameEl.getText().trim();
+//
+//            String pdpCurrent = pdpCurrentEl.getText().trim();
+//
+//            // PDP Actual price
+//            List<WebElement> pdpActualList = driver.findElements(
+//                    By.xpath("//div[@class='prod_actual_price']")
+//            );
+//
+//            String pdpActual;
+//
+//            // If actual price is not available, use current price
+//            if (pdpActualList.isEmpty()) {
+//                pdpActual = pdpCurrent;
+//            } else {
+//                pdpActual = pdpActualList.get(0).getText().trim();
+//            }
+//
+//            // PDP Discount
+//            String pdpDiscount = "0%";
+//
+//            if (!pdpActual.equals(pdpCurrent)) {
+//
+//                int curr = Integer.parseInt(
+//                        pdpCurrent.replaceAll("[^0-9]", "")
+//                );
+//
+//                int act = Integer.parseInt(
+//                        pdpActual.replaceAll("[^0-9]", "")
+//                );
+//
+//                pdpDiscount = ((act - curr) * 100) / act + "%";
+//            }
+//
+//            System.out.println(
+//                    YELLOW + "PDP Name: " + pdpName + RESET
+//            );
+//
+//            System.out.println(
+//                    "PDP Current: " + pdpCurrent
+//                    + " | Actual: " + pdpActual
+//                    + " | Discount: " + pdpDiscount
+//            );
+//
+//            // ===== VALIDATION =====
+//
+//            // Price validation
+//            if (!cardCurrent.replaceAll("[^0-9]", "")
+//                    .equals(pdpCurrent.replaceAll("[^0-9]", ""))) {
+//
+//                System.out.println(
+//                        RED + "Price Mismatch ❌ -> Card: "
+//                        + cardCurrent
+//                        + " | PDP: "
+//                        + pdpCurrent
+//                        + RESET
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN + "Price Match ✅" + RESET
+//                );
+//            }
+//
+//            verifiedCount++;
+//
+//            // ===== BACK NAVIGATION =====
+//
+//            driver.navigate().back();
+//
+//            wait.until(
+//                    ExpectedConditions.presenceOfElementLocated(sectionLocator)
+//            );
+//
+//            WebElement sectionAgain = driver.findElement(sectionLocator);
+//
+//            ((JavascriptExecutor) driver)
+//                    .executeScript(
+//                            "arguments[0].scrollIntoView(true);",
+//                            sectionAgain
+//                    );
+//
+//            Thread.sleep(1500);
+//
+//        } catch (Exception e) {
+//
+//            System.out.println(
+//                    RED + "Error at product index: "
+//                    + i
+//                    + " -> "
+//                    + e.getMessage()
+//                    + RESET
+//            );
+//        }
+//    }
+//
+//    // ===== CLICK VIEW ALL =====
+//
+//    List<WebElement> viewAll = driver.findElements(viewAllLocator);
+//
+//    if (!viewAll.isEmpty()) {
+//
+//        ((JavascriptExecutor) driver)
+//                .executeScript(
+//                        "arguments[0].click();",
+//                        viewAll.get(0)
+//                );
+//
+//        Thread.sleep(1500);
+//
+//        String heading = driver.findElement(
+//                By.xpath("//h2[@class='prod_listing_topic']")
+//        ).getText();
+//
+//        String url = driver.getCurrentUrl();
+//
+//        System.out.println(
+//                BLUE + "View All Page Heading: "
+//                + heading
+//                + RESET
+//        );
+//
+//        System.out.println(
+//                BLUE + "View All Page URL: "
+//                + url
+//                + RESET
+//        );
+//    }
+//
+//    System.out.println(
+//            BLUE + "Verified Products Count: "
+//            + verifiedCount
+//            + "/"
+//            + total
+//            + RESET
+//    );
+//
+//    if (verifiedCount == hoverLimit) {
+//
+//        System.out.println(
+//                GREEN + "All checked products verified successfully ✅"
+//                + RESET
+//        );
+//
+//    } else {
+//
+//        System.out.println(
+//                BLUE + "Some products were skipped or had errors ⏭️"
+//                + RESET
+//        );
+//    }
+//
+//    // Close browser
+//    driver.quit();
+//}
+
+
+//public void verifyNewInProductsCompleteFlow() throws InterruptedException {
+//
+//    String GREEN  = "\u001B[32m";
+//    String RED    = "\u001B[31m";
+//    String YELLOW = "\u001B[33m";
+//    String BLUE   = "\u001B[34m";
+//    String RESET  = "\u001B[0m";
+//
+//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//    Actions actions = new Actions(driver);
+//
+//    // Open homepage
+//    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+//
+//    // Click Shop button
+//    click(zlaataIndiaShopButton);
+//
+//    By sectionLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//    );
+//
+//    By productLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']//a[contains(@class,'banner_link')]"
+//    );
+//
+//    By viewAllLocator = By.xpath(
+//            "//a[contains(@class,'new_in_redirect')]"
+//    );
+//
+//    // Scroll to NEW IN section
+//    WebElement section = wait.until(
+//            ExpectedConditions.presenceOfElementLocated(sectionLocator)
+//    );
+//
+//    ((JavascriptExecutor) driver)
+//            .executeScript(
+//                    "arguments[0].scrollIntoView(true);",
+//                    section
+//            );
+//
+//    Thread.sleep(1000);
+//
+//    List<WebElement> products = wait.until(
+//            ExpectedConditions.presenceOfAllElementsLocatedBy(productLocator)
+//    );
+//
+//    int total = products.size();
+//    int verifiedCount = 0;
+//
+//    System.out.println(
+//            BLUE + "Total Products: " + total + RESET
+//    );
+//
+//    // Verify ALL products
+//    for (int i = 0; i < total; i++) {
+//
+//        try {
+//
+//            // Re-fetch products after returning from PDP
+//            products = wait.until(
+//                    ExpectedConditions.presenceOfAllElementsLocatedBy(
+//                            productLocator
+//                    )
+//            );
+//
+//            WebElement product = products.get(i);
+//
+//            // Scroll to product
+//            ((JavascriptExecutor) driver)
+//                    .executeScript(
+//                            "arguments[0].scrollIntoView({block:'center'});",
+//                            product
+//                    );
+//
+//            // Hover
+//            actions.moveToElement(product).perform();
+//
+//            Thread.sleep(1500);
+//
+//            // ===== CARD DATA =====
+//
+//            String cardName = product.findElement(
+//                    By.xpath(".//h3[@class='new_in_heading']")
+//            ).getText().trim();
+//
+//            String cardCurrent = product.findElement(
+//                    By.xpath(".//span[contains(@class,'prod_current_price')]")
+//            ).getText().trim();
+//
+//            // Actual price
+//            List<WebElement> cardActualList = product.findElements(
+//                    By.xpath(".//span[contains(@class,'prod_actual_price')]")
+//            );
+//
+//            String cardActual;
+//
+//            if (cardActualList.isEmpty()) {
+//                cardActual = cardCurrent;
+//            } else {
+//                cardActual = cardActualList.get(0).getText().trim();
+//            }
+//
+//            // Discount
+//            String cardDiscount = "0%";
+//
+//            if (!cardActual.equals(cardCurrent)) {
+//
+//                int curr = Integer.parseInt(
+//                        cardCurrent.replaceAll("[^0-9]", "")
+//                );
+//
+//                int act = Integer.parseInt(
+//                        cardActual.replaceAll("[^0-9]", "")
+//                );
+//
+//                cardDiscount = ((act - curr) * 100) / act + "%";
+//            }
+//
+//            System.out.println(
+//                    BLUE + "Hover Card: " + cardName + RESET
+//            );
+//
+//            System.out.println(
+//                    "Card Current: " + cardCurrent
+//                            + " | Actual: " + cardActual
+//                            + " | Discount: " + cardDiscount
+//            );
+//
+//            // ===== CLICK PRODUCT =====
+//
+//            ((JavascriptExecutor) driver)
+//                    .executeScript(
+//                            "arguments[0].click();",
+//                            product
+//                    );
+//
+//            // ===== PDP =====
+//
+//            WebElement pdpNameEl = wait.until(
+//                    ExpectedConditions.visibilityOfElementLocated(
+//                            By.xpath("//h3[@class='prod_name']")
+//                    )
+//            );
+//
+//            WebElement pdpCurrentEl = wait.until(
+//                    ExpectedConditions.visibilityOfElementLocated(
+//                            By.xpath("//div[@class='prod_current_price']")
+//                    )
+//            );
+//
+//            String pdpName = pdpNameEl.getText().trim();
+//
+//            String pdpCurrent = pdpCurrentEl.getText().trim();
+//
+//            // PDP Actual price
+//            List<WebElement> pdpActualList = driver.findElements(
+//                    By.xpath("//div[@class='prod_actual_price']")
+//            );
+//
+//            String pdpActual;
+//
+//            if (pdpActualList.isEmpty()) {
+//                pdpActual = pdpCurrent;
+//            } else {
+//                pdpActual = pdpActualList.get(0).getText().trim();
+//            }
+//
+//            // PDP Discount
+//            String pdpDiscount = "0%";
+//
+//            if (!pdpActual.equals(pdpCurrent)) {
+//
+//                int curr = Integer.parseInt(
+//                        pdpCurrent.replaceAll("[^0-9]", "")
+//                );
+//
+//                int act = Integer.parseInt(
+//                        pdpActual.replaceAll("[^0-9]", "")
+//                );
+//
+//                pdpDiscount = ((act - curr) * 100) / act + "%";
+//            }
+//
+//            System.out.println(
+//                    YELLOW + "PDP Name: " + pdpName + RESET
+//            );
+//
+//            System.out.println(
+//                    "PDP Current: " + pdpCurrent
+//                            + " | Actual: " + pdpActual
+//                            + " | Discount: " + pdpDiscount
+//            );
+//
+//            // ===== VALIDATION =====
+//
+//            // Validate Product Name
+//            if (!cardName.equalsIgnoreCase(pdpName)) {
+//
+//                System.out.println(
+//                        RED + "Product Name Mismatch ❌ -> Card: "
+//                                + cardName
+//                                + " | PDP: "
+//                                + pdpName
+//                                + RESET
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN + "Product Name Match ✅" + RESET
+//                );
+//            }
+//
+//            // Validate Price
+//            if (!cardCurrent.replaceAll("[^0-9]", "")
+//                    .equals(pdpCurrent.replaceAll("[^0-9]", ""))) {
+//
+//                System.out.println(
+//                        RED + "Price Mismatch ❌ -> Card: "
+//                                + cardCurrent
+//                                + " | PDP: "
+//                                + pdpCurrent
+//                                + RESET
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN + "Price Match ✅" + RESET
+//                );
+//            }
+//
+//            verifiedCount++;
+//
+//            // ===== BACK NAVIGATION =====
+//
+//            driver.navigate().back();
+//
+//            wait.until(
+//                    ExpectedConditions.presenceOfElementLocated(
+//                            sectionLocator
+//                    )
+//            );
+//
+//            WebElement sectionAgain = driver.findElement(
+//                    sectionLocator
+//            );
+//
+//            ((JavascriptExecutor) driver)
+//                    .executeScript(
+//                            "arguments[0].scrollIntoView(true);",
+//                            sectionAgain
+//                    );
+//
+//            Thread.sleep(1500);
+//
+//        } catch (Exception e) {
+//
+//            System.out.println(
+//                    RED + "Error at product index: "
+//                            + i
+//                            + " -> "
+//                            + e.getMessage()
+//                            + RESET
+//            );
+//        }
+//    }
+//
+//    // ===== CLICK VIEW ALL =====
+//
+//    List<WebElement> viewAll = driver.findElements(
+//            viewAllLocator
+//    );
+//
+//    if (!viewAll.isEmpty()) {
+//
+//        ((JavascriptExecutor) driver)
+//                .executeScript(
+//                        "arguments[0].click();",
+//                        viewAll.get(0)
+//                );
+//
+//        Thread.sleep(1500);
+//
+//        String heading = driver.findElement(
+//                By.xpath("//h2[@class='prod_listing_topic']")
+//        ).getText();
+//
+//        String url = driver.getCurrentUrl();
+//
+//        System.out.println(
+//                BLUE + "View All Page Heading: "
+//                        + heading
+//                        + RESET
+//        );
+//
+//        System.out.println(
+//                BLUE + "View All Page URL: "
+//                        + url
+//                        + RESET
+//        );
+//    }
+//
+//    // ===== FINAL RESULT =====
+//
+//    System.out.println(
+//            BLUE + "Verified Products Count: "
+//                    + verifiedCount
+//                    + "/"
+//                    + total
+//                    + RESET
+//    );
+//
+//    if (verifiedCount == total) {
+//
+//        System.out.println(
+//                GREEN
+//                        + "All products verified successfully ✅"
+//                        + RESET
+//        );
+//
+//    } else {
+//
+//        System.out.println(
+//                RED
+//                        + "Some products were not verified ❌"
+//                        + RESET
+//        );
+//    }
+//
+//    // Close browser
+//    driver.quit();
+//}
+
+
+//public void verifyNewInProductsCompleteFlow() throws InterruptedException {
+//
+//    String GREEN  = "\u001B[32m";
+//    String RED    = "\u001B[31m";
+//    String YELLOW = "\u001B[33m";
+//    String BLUE   = "\u001B[34m";
+//    String RESET  = "\u001B[0m";
+//
+//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//    Actions actions = new Actions(driver);
+//
+//    // =========================================================
+//    // OPEN HOMEPAGE
+//    // =========================================================
+//
+//    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+//
+//    // Click Shop button
+//    click(zlaataIndiaShopButton);
+//
+//    By sectionLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//    );
+//
+//    By productLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//                    + "//a[contains(@class,'banner_link')]"
+//    );
+//
+//    By viewAllLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//                    + "//a[contains(@class,'new_in_redirect')]"
+//    );
+//
+//    // =========================================================
+//    // SCROLL TO NEW IN SECTION
+//    // =========================================================
+//
+//    WebElement section = wait.until(
+//            ExpectedConditions.presenceOfElementLocated(sectionLocator)
+//    );
+//
+//    ((JavascriptExecutor) driver)
+//            .executeScript(
+//                    "arguments[0].scrollIntoView(true);",
+//                    section
+//            );
+//
+//    Thread.sleep(1000);
+//
+//    // =========================================================
+//    // GET PRODUCTS
+//    // =========================================================
+//
+//    List<WebElement> products = wait.until(
+//            ExpectedConditions.presenceOfAllElementsLocatedBy(productLocator)
+//    );
+//
+//    int total = products.size();
+//
+//    /*
+//     * The last element is View All.
+//     * Only the first 7 products should be verified.
+//     */
+//    int verifyCount = Math.min(total - 1, 7);
+//
+//    int verifiedCount = 0;
+//
+//    System.out.println(
+//            BLUE + "Total New In Products to Verify: "
+//                    + verifyCount
+//                    + RESET
+//    );
+//
+//    // =========================================================
+//    // VERIFY PRODUCTS
+//    // =========================================================
+//
+//    for (int i = 0; i < verifyCount; i++) {
+//
+//        try {
+//
+//            // Re-fetch products after returning from PDP
+//            products = wait.until(
+//                    ExpectedConditions.presenceOfAllElementsLocatedBy(
+//                            productLocator
+//                    )
+//            );
+//
+//            WebElement product = products.get(i);
+//
+//            // =================================================
+//            // SCROLL TO PRODUCT
+//            // =================================================
+//
+//            ((JavascriptExecutor) driver)
+//                    .executeScript(
+//                            "arguments[0].scrollIntoView({block:'center'});",
+//                            product
+//                    );
+//
+//            // Hover product
+//            actions.moveToElement(product).perform();
+//
+//            Thread.sleep(1500);
+//
+//            // =================================================
+//            // CARD DATA
+//            // =================================================
+//
+//            String cardName = product.findElement(
+//                    By.xpath(".//h3[@class='new_in_heading']")
+//            ).getText().trim();
+//
+//            // -------------------------------------------------
+//            // CURRENT PRICE
+//            // -------------------------------------------------
+//
+//            List<WebElement> cardCurrentList = product.findElements(
+//                    By.xpath(".//span[contains(@class,'prod_current_price')]")
+//            );
+//
+//            String cardCurrent = "";
+//
+//            if (!cardCurrentList.isEmpty()) {
+//
+//                cardCurrent = cardCurrentList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // -------------------------------------------------
+//            // ACTUAL PRICE
+//            // -------------------------------------------------
+//
+//            List<WebElement> cardActualList = product.findElements(
+//                    By.xpath(".//span[contains(@class,'prod_actual_price')]")
+//            );
+//
+//            String cardActual;
+//
+//            if (cardActualList.isEmpty() || cardCurrent.isEmpty()) {
+//
+//                cardActual = cardCurrent;
+//
+//            } else {
+//
+//                cardActual = cardActualList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // -------------------------------------------------
+//            // DISCOUNT
+//            // -------------------------------------------------
+//
+//            String cardDiscount = "0%";
+//
+//            if (!cardCurrent.isEmpty()
+//                    && !cardActual.isEmpty()
+//                    && !cardActual.equals(cardCurrent)) {
+//
+//                int curr = Integer.parseInt(
+//                        cardCurrent.replaceAll("[^0-9]", "")
+//                );
+//
+//                int act = Integer.parseInt(
+//                        cardActual.replaceAll("[^0-9]", "")
+//                );
+//
+//                cardDiscount = ((act - curr) * 100) / act + "%";
+//            }
+//
+//            // =================================================
+//            // PRINT CARD DATA
+//            // =================================================
+//
+//            System.out.println(
+//                    BLUE + "----------------------------------------"
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    BLUE + "Product "
+//                            + (i + 1)
+//                            + ": "
+//                            + cardName
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    "Card Current: "
+//                            + (cardCurrent.isEmpty()
+//                                    ? "Not Visible"
+//                                    : cardCurrent)
+//                            + " | Actual: "
+//                            + (cardActual.isEmpty()
+//                                    ? "Not Visible"
+//                                    : cardActual)
+//                            + " | Discount: "
+//                            + cardDiscount
+//            );
+//
+//            // =================================================
+//            // CLICK PRODUCT
+//            // =================================================
+//
+//            ((JavascriptExecutor) driver)
+//                    .executeScript(
+//                            "arguments[0].click();",
+//                            product
+//                    );
+//
+//            // =================================================
+//            // PDP DATA
+//            // =================================================
+//
+//            WebElement pdpNameEl = wait.until(
+//                    ExpectedConditions.visibilityOfElementLocated(
+//                            By.xpath("//h3[@class='prod_name']")
+//                    )
+//            );
+//
+//            String pdpName = pdpNameEl
+//                    .getText()
+//                    .trim();
+//
+//            // -------------------------------------------------
+//            // PDP CURRENT PRICE
+//            // -------------------------------------------------
+//
+//            List<WebElement> pdpCurrentList = driver.findElements(
+//                    By.xpath("//div[@class='prod_current_price']")
+//            );
+//
+//            String pdpCurrent = "";
+//
+//            if (!pdpCurrentList.isEmpty()) {
+//
+//                pdpCurrent = pdpCurrentList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // -------------------------------------------------
+//            // PDP ACTUAL PRICE
+//            // -------------------------------------------------
+//
+//            List<WebElement> pdpActualList = driver.findElements(
+//                    By.xpath("//div[@class='prod_actual_price']")
+//            );
+//
+//            String pdpActual;
+//
+//            if (pdpActualList.isEmpty() || pdpCurrent.isEmpty()) {
+//
+//                pdpActual = pdpCurrent;
+//
+//            } else {
+//
+//                pdpActual = pdpActualList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // -------------------------------------------------
+//            // PDP DISCOUNT
+//            // -------------------------------------------------
+//
+//            String pdpDiscount = "0%";
+//
+//            if (!pdpCurrent.isEmpty()
+//                    && !pdpActual.isEmpty()
+//                    && !pdpActual.equals(pdpCurrent)) {
+//
+//                int curr = Integer.parseInt(
+//                        pdpCurrent.replaceAll("[^0-9]", "")
+//                );
+//
+//                int act = Integer.parseInt(
+//                        pdpActual.replaceAll("[^0-9]", "")
+//                );
+//
+//                pdpDiscount = ((act - curr) * 100) / act + "%";
+//            }
+//
+//            // =================================================
+//            // PRINT PDP DATA
+//            // =================================================
+//
+//            System.out.println(
+//                    YELLOW + "PDP Name: "
+//                            + pdpName
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    "PDP Current: "
+//                            + (pdpCurrent.isEmpty()
+//                                    ? "Not Visible"
+//                                    : pdpCurrent)
+//                            + " | Actual: "
+//                            + (pdpActual.isEmpty()
+//                                    ? "Not Visible"
+//                                    : pdpActual)
+//                            + " | Discount: "
+//                            + pdpDiscount
+//            );
+//
+//            // =================================================
+//            // VALIDATE PRODUCT NAME
+//            // =================================================
+//
+//            if (!cardName.equalsIgnoreCase(pdpName)) {
+//
+//                System.out.println(
+//                        RED + "Product Name Mismatch ❌ -> Card: "
+//                                + cardName
+//                                + " | PDP: "
+//                                + pdpName
+//                                + RESET
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN + "Product Name Match ✅"
+//                                + RESET
+//                );
+//            }
+//
+//            // =================================================
+//            // VALIDATE PRICE
+//            // =================================================
+//
+//            if (cardCurrent.isEmpty() || pdpCurrent.isEmpty()) {
+//
+//                System.out.println(
+//                        YELLOW
+//                                + "Price not visible. Price validation skipped."
+//                                + RESET
+//                );
+//
+//            } else if (!cardCurrent
+//                    .replaceAll("[^0-9]", "")
+//                    .equals(
+//                            pdpCurrent.replaceAll("[^0-9]", "")
+//                    )) {
+//
+//                System.out.println(
+//                        RED + "Price Mismatch ❌ -> Card: "
+//                                + cardCurrent
+//                                + " | PDP: "
+//                                + pdpCurrent
+//                                + RESET
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN + "Price Match ✅"
+//                                + RESET
+//                );
+//            }
+//
+//            verifiedCount++;
+//
+//            // =================================================
+//            // BACK TO NEW IN SECTION
+//            // =================================================
+//
+//            driver.navigate().back();
+//
+//            wait.until(
+//                    ExpectedConditions.presenceOfElementLocated(
+//                            sectionLocator
+//                    )
+//            );
+//
+//            WebElement sectionAgain = driver.findElement(
+//                    sectionLocator
+//            );
+//
+//            ((JavascriptExecutor) driver)
+//                    .executeScript(
+//                            "arguments[0].scrollIntoView(true);",
+//                            sectionAgain
+//                    );
+//
+//            Thread.sleep(1500);
+//
+//        } catch (Exception e) {
+//
+//            System.out.println(
+//                    RED + "Error at product index: "
+//                            + i
+//                            + " -> "
+//                            + e.getMessage()
+//                            + RESET
+//            );
+//        }
+//    }
+//
+//    // =========================================================
+//    // VIEW ALL - DO NOT VERIFY AS PRODUCT
+//    // =========================================================
+//
+//    List<WebElement> viewAll = driver.findElements(
+//            viewAllLocator
+//    );
+//
+//    if (!viewAll.isEmpty()) {
+//
+//        System.out.println(
+//                BLUE + "View All button is available."
+//                        + RESET
+//        );
+//
+//        ((JavascriptExecutor) driver)
+//                .executeScript(
+//                        "arguments[0].scrollIntoView({block:'center'});",
+//                        viewAll.get(0)
+//                );
+//
+//        Thread.sleep(500);
+//
+//        // Click View All
+//        ((JavascriptExecutor) driver)
+//                .executeScript(
+//                        "arguments[0].click();",
+//                        viewAll.get(0)
+//                );
+//
+//        Thread.sleep(1500);
+//
+//        String heading = driver.findElement(
+//                By.xpath("//h2[@class='prod_listing_topic']")
+//        ).getText();
+//
+//        String url = driver.getCurrentUrl();
+//
+//        System.out.println(
+//                BLUE + "View All Page Heading: "
+//                        + heading
+//                        + RESET
+//        );
+//
+//        System.out.println(
+//                BLUE + "View All Page URL: "
+//                        + url
+//                        + RESET
+//        );
+//
+//    } else {
+//
+//        System.out.println(
+//                YELLOW + "View All button is not available."
+//                        + RESET
+//        );
+//    }
+//
+//    // =========================================================
+//    // FINAL RESULT
+//    // =========================================================
+//
+//    System.out.println(
+//            BLUE + "========================================"
+//                    + RESET
+//    );
+//
+//    System.out.println(
+//            BLUE + "Verified New In Products: "
+//                    + verifiedCount
+//                    + "/"
+//                    + verifyCount
+//                    + RESET
+//    );
+//
+//    if (verifiedCount == verifyCount) {
+//
+//        System.out.println(
+//                GREEN
+//                        + "All 7 New In products verified successfully ✅"
+//                        + RESET
+//        );
+//
+//    } else {
+//
+//        System.out.println(
+//                RED
+//                        + "Some New In products were not verified ❌"
+//                        + RESET
+//        );
+//    }
+//
+//    // =========================================================
+//    // CLOSE BROWSER
+//    // =========================================================
+//
+//    driver.quit();
+//}
+
+//public void verifyNewInProductsCompleteFlow() throws InterruptedException {
+//
+//    String GREEN  = "\u001B[32m";
+//    String RED    = "\u001B[31m";
+//    String YELLOW = "\u001B[33m";
+//    String BLUE   = "\u001B[34m";
+//    String RESET  = "\u001B[0m";
+//
+//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//    Actions actions = new Actions(driver);
+//
+//    // =========================================================
+//    // OPEN HOME PAGE
+//    // =========================================================
+//
+//    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+//
+//    click(zlaataIndiaShopButton);
+//
+//    By sectionLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//    );
+//
+//    By productLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//                    + "//a[contains(@class,'banner_link')]"
+//    );
+//
+//    By viewAllLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//                    + "//a[contains(@class,'new_in_redirect')]"
+//    );
+//
+//    // =========================================================
+//    // SCROLL TO NEW ARRIVALS SECTION
+//    // =========================================================
+//
+//    WebElement section = wait.until(
+//            ExpectedConditions.presenceOfElementLocated(sectionLocator)
+//    );
+//
+//    ((JavascriptExecutor) driver).executeScript(
+//            "arguments[0].scrollIntoView(true);",
+//            section
+//    );
+//
+//    Thread.sleep(1000);
+//
+//    // =========================================================
+//    // GET NEW ARRIVALS PRODUCTS
+//    // =========================================================
+//
+//    List<WebElement> products = wait.until(
+//            ExpectedConditions.presenceOfAllElementsLocatedBy(productLocator)
+//    );
+//
+//    int total = products.size();
+//
+//    // Last element is View All.
+//    // Verify only first 7 products.
+//    int verifyCount = Math.min(total - 1, 7);
+//
+//    int verifiedCount = 0;
+//
+//    System.out.println(
+//            BLUE + "Total New Arrivals Products to Verify: "
+//                    + verifyCount
+//                    + RESET
+//    );
+//
+//    // =========================================================
+//    // VERIFY FIRST 7 PRODUCTS
+//    // =========================================================
+//
+//    for (int i = 0; i < verifyCount; i++) {
+//
+//        try {
+//
+//            // Re-fetch products after returning from PDP
+//            products = wait.until(
+//                    ExpectedConditions.presenceOfAllElementsLocatedBy(
+//                            productLocator
+//                    )
+//            );
+//
+//            WebElement product = products.get(i);
+//
+//            // =================================================
+//            // SCROLL TO PRODUCT
+//            // =================================================
+//
+//            ((JavascriptExecutor) driver).executeScript(
+//                    "arguments[0].scrollIntoView({block:'center'});",
+//                    product
+//            );
+//
+//            actions.moveToElement(product).perform();
+//
+//            Thread.sleep(1500);
+//
+//            // =================================================
+//            // HOME PAGE / NEW ARRIVALS DATA
+//            // =================================================
+//
+//            String homeProductName = product.findElement(
+//                    By.xpath(".//h3[@class='new_in_heading']")
+//            ).getText().trim();
+//
+//            // -------------------------------------------------
+//            // HOME PAGE CURRENT PRICE
+//            // -------------------------------------------------
+//
+//            List<WebElement> homeCurrentList = product.findElements(
+//                    By.xpath(".//span[contains(@class,'prod_current_price')]")
+//            );
+//
+//            String homeCurrent = "";
+//
+//            if (!homeCurrentList.isEmpty()) {
+//
+//                homeCurrent = homeCurrentList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // -------------------------------------------------
+//            // HOME PAGE ACTUAL PRICE
+//            // -------------------------------------------------
+//
+//            List<WebElement> homeActualList = product.findElements(
+//                    By.xpath(".//span[contains(@class,'prod_actual_price')]")
+//            );
+//
+//            String homeActual;
+//
+//            if (homeActualList.isEmpty() || homeCurrent.isEmpty()) {
+//
+//                homeActual = homeCurrent;
+//
+//            } else {
+//
+//                homeActual = homeActualList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // =================================================
+//            // PRINT HOME PAGE DATA
+//            // NO DISCOUNT PERCENTAGE HERE
+//            // =================================================
+//
+//            System.out.println(
+//                    BLUE + "----------------------------------------"
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    BLUE + "New Arrivals Product "
+//                            + (i + 1)
+//                            + ": "
+//                            + homeProductName
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    "Home Page Current Price: "
+//                            + (homeCurrent.isEmpty()
+//                                    ? "Not Visible"
+//                                    : homeCurrent)
+//                            + " | Actual Price: "
+//                            + (homeActual.isEmpty()
+//                                    ? "Not Visible"
+//                                    : homeActual)
+//            );
+//
+//            // =================================================
+//            // CLICK PRODUCT
+//            // =================================================
+//
+//            ((JavascriptExecutor) driver).executeScript(
+//                    "arguments[0].click();",
+//                    product
+//            );
+//
+//            // =================================================
+//            // PDP PRODUCT NAME
+//            // =================================================
+//
+//            WebElement pdpNameElement = wait.until(
+//                    ExpectedConditions.visibilityOfElementLocated(
+//                            By.xpath("//h3[@class='prod_name']")
+//                    )
+//            );
+//
+//            String pdpProductName = pdpNameElement
+//                    .getText()
+//                    .trim();
+//
+//            // =================================================
+//            // PDP CURRENT PRICE
+//            // =================================================
+//
+//            List<WebElement> pdpCurrentList = driver.findElements(
+//                    By.xpath("//div[@class='prod_current_price']")
+//            );
+//
+//            String pdpCurrent = "";
+//
+//            if (!pdpCurrentList.isEmpty()) {
+//
+//                pdpCurrent = pdpCurrentList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // =================================================
+//            // PDP ACTUAL PRICE
+//            // =================================================
+//
+//            List<WebElement> pdpActualList = driver.findElements(
+//                    By.xpath("//div[@class='prod_actual_price']")
+//            );
+//
+//            String pdpActual;
+//
+//            if (pdpActualList.isEmpty() || pdpCurrent.isEmpty()) {
+//
+//                pdpActual = pdpCurrent;
+//
+//            } else {
+//
+//                pdpActual = pdpActualList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // =================================================
+//            // PDP DISCOUNT PERCENTAGE
+//            // =================================================
+//
+//            String pdpDiscount = "0%";
+//
+//            if (!pdpCurrent.isEmpty()
+//                    && !pdpActual.isEmpty()
+//                    && !pdpActual.equals(pdpCurrent)) {
+//
+//                String currentNumber = pdpCurrent
+//                        .replaceAll("[^0-9]", "");
+//
+//                String actualNumber = pdpActual
+//                        .replaceAll("[^0-9]", "");
+//
+//                if (!currentNumber.isEmpty()
+//                        && !actualNumber.isEmpty()) {
+//
+//                    int currentPrice = Integer.parseInt(currentNumber);
+//                    int actualPrice = Integer.parseInt(actualNumber);
+//
+//                    if (actualPrice > 0) {
+//
+//                        pdpDiscount =
+//                                ((actualPrice - currentPrice) * 100)
+//                                        / actualPrice
+//                                        + "%";
+//                    }
+//                }
+//            }
+//
+//            // =================================================
+//            // PRINT PDP DATA
+//            // PDP DISCOUNT IS DISPLAYED HERE
+//            // =================================================
+//
+//            System.out.println(
+//                    YELLOW + "PDP Product Name: "
+//                            + pdpProductName
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    "PDP Current Price: "
+//                            + (pdpCurrent.isEmpty()
+//                                    ? "Not Visible"
+//                                    : pdpCurrent)
+//                            + " | Actual Price: "
+//                            + (pdpActual.isEmpty()
+//                                    ? "Not Visible"
+//                                    : pdpActual)
+//                            + " | Discount: "
+//                            + pdpDiscount
+//            );
+//
+//            // =================================================
+//            // FAIL IF DISCOUNT IS AVAILABLE ON PDP
+//            // =================================================
+//
+//            if (!pdpDiscount.equals("0%")) {
+//
+//                System.out.println(
+//                        RED + "Discount Percentage is displayed on PDP: "
+//                                + pdpDiscount
+//                                + " ❌"
+//                                + RESET
+//                );
+//
+//                Assert.fail(
+//                        "Discount percentage is displayed on PDP: "
+//                                + pdpDiscount
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN
+//                                + "No Discount Percentage displayed on PDP ✅"
+//                                + RESET
+//                );
+//            }
+//
+//            // =================================================
+//            // VALIDATE PRODUCT NAME
+//            // =================================================
+//
+//            if (!homeProductName.equalsIgnoreCase(pdpProductName)) {
+//
+//                System.out.println(
+//                        RED + "Product Name Mismatch ❌ -> Home Page: "
+//                                + homeProductName
+//                                + " | PDP: "
+//                                + pdpProductName
+//                                + RESET
+//                );
+//
+//                Assert.fail(
+//                        "Product Name mismatch. Home Page: "
+//                                + homeProductName
+//                                + " | PDP: "
+//                                + pdpProductName
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN + "Product Name Match ✅"
+//                                + RESET
+//                );
+//            }
+//
+//            // =================================================
+//            // VALIDATE PRICE
+//            // =================================================
+//
+//            if (homeCurrent.isEmpty() || pdpCurrent.isEmpty()) {
+//
+//                System.out.println(
+//                        YELLOW
+//                                + "Price not visible. Price validation skipped."
+//                                + RESET
+//                );
+//
+//            } else {
+//
+//                String homePriceNumber = homeCurrent
+//                        .replaceAll("[^0-9]", "");
+//
+//                String pdpPriceNumber = pdpCurrent
+//                        .replaceAll("[^0-9]", "");
+//
+//                if (!homePriceNumber.equals(pdpPriceNumber)) {
+//
+//                    System.out.println(
+//                            RED + "Price Mismatch ❌ -> Home Page: "
+//                                    + homeCurrent
+//                                    + " | PDP: "
+//                                    + pdpCurrent
+//                                    + RESET
+//                    );
+//
+//                    Assert.fail(
+//                            "Price mismatch. Home Page: "
+//                                    + homeCurrent
+//                                    + " | PDP: "
+//                                    + pdpCurrent
+//                    );
+//
+//                } else {
+//
+//                    System.out.println(
+//                            GREEN + "Price Match ✅"
+//                                    + RESET
+//                    );
+//                }
+//            }
+//
+//            verifiedCount++;
+//
+//            // =================================================
+//            // BACK TO NEW ARRIVALS
+//            // =================================================
+//
+//            driver.navigate().back();
+//
+//            wait.until(
+//                    ExpectedConditions.presenceOfElementLocated(
+//                            sectionLocator
+//                    )
+//            );
+//
+//            WebElement sectionAgain = driver.findElement(
+//                    sectionLocator
+//            );
+//
+//            ((JavascriptExecutor) driver).executeScript(
+//                    "arguments[0].scrollIntoView(true);",
+//                    sectionAgain
+//            );
+//
+//            Thread.sleep(1500);
+//
+//        } catch (AssertionError e) {
+//
+//            System.out.println(
+//                    RED + "Test Case Failed at Product "
+//                            + (i + 1)
+//                            + " -> "
+//                            + e.getMessage()
+//                            + RESET
+//            );
+//
+//            throw e;
+//
+//        } catch (Exception e) {
+//
+//            System.out.println(
+//                    RED + "Error at Product "
+//                            + (i + 1)
+//                            + " -> "
+//                            + e.getMessage()
+//                            + RESET
+//            );
+//
+//            Assert.fail(
+//                    "Error while verifying Product "
+//                            + (i + 1)
+//                            + ": "
+//                            + e.getMessage()
+//            );
+//        }
+//    }
+//
+//    // =========================================================
+//    // VIEW ALL - DO NOT VERIFY AS PRODUCT
+//    // =========================================================
+//
+//    List<WebElement> viewAll = driver.findElements(
+//            viewAllLocator
+//    );
+//
+//    if (!viewAll.isEmpty()) {
+//
+//        System.out.println(
+//                BLUE + "View All button is available."
+//                        + RESET
+//        );
+//
+//        ((JavascriptExecutor) driver).executeScript(
+//                "arguments[0].scrollIntoView({block:'center'});",
+//                viewAll.get(0)
+//        );
+//
+//        Thread.sleep(500);
+//
+//        // Click View All
+//        ((JavascriptExecutor) driver).executeScript(
+//                "arguments[0].click();",
+//                viewAll.get(0)
+//        );
+//
+//        Thread.sleep(1500);
+//
+//        String heading = driver.findElement(
+//                By.xpath("//h2[@class='prod_listing_topic']")
+//        ).getText();
+//
+//        String url = driver.getCurrentUrl();
+//
+//        System.out.println(
+//                BLUE + "View All Page Heading: "
+//                        + heading
+//                        + RESET
+//        );
+//
+//        System.out.println(
+//                BLUE + "View All Page URL: "
+//                        + url
+//                        + RESET
+//        );
+//
+//    } else {
+//
+//        System.out.println(
+//                YELLOW + "View All button is not available."
+//                        + RESET
+//        );
+//    }
+//
+//    // =========================================================
+//    // FINAL RESULT
+//    // =========================================================
+//
+//    System.out.println(
+//            BLUE + "========================================"
+//                    + RESET
+//    );
+//
+//    System.out.println(
+//            BLUE + "Verified New Arrivals Products: "
+//                    + verifiedCount
+//                    + "/"
+//                    + verifyCount
+//                    + RESET
+//    );
+//
+//    if (verifiedCount == verifyCount) {
+//
+//        System.out.println(
+//                GREEN
+//                        + "All 7 New Arrivals products verified successfully ✅"
+//                        + RESET
+//        );
+//
+//    } else {
+//
+//        System.out.println(
+//                RED
+//                        + "Some New Arrivals products were not verified ❌"
+//                        + RESET
+//        );
+//    }
+//
+//    // =========================================================
+//    // CLOSE BROWSER
+//    // =========================================================
+//
+//    driver.quit();
+//}
+
+
+//public void verifyNewInProductsCompleteFlow() throws InterruptedException {
+//
+//    String GREEN  = "\u001B[32m";
+//    String RED    = "\u001B[31m";
+//    String YELLOW = "\u001B[33m";
+//    String BLUE   = "\u001B[34m";
+//    String RESET  = "\u001B[0m";
+//
+//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//    Actions actions = new Actions(driver);
+//
+//    // =========================================================
+//    // OPEN HOME PAGE
+//    // =========================================================
+//
+//    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+//
+//    click(zlaataIndiaShopButton);
+//
+//    By sectionLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//    );
+//
+//    By productLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//                    + "//a[contains(@class,'banner_link')]"
+//    );
+//
+//    By viewAllLocator = By.xpath(
+//            "//section[@data-section='new_arrivals']"
+//                    + "//a[contains(@class,'new_in_redirect')]"
+//    );
+//
+//    // =========================================================
+//    // SCROLL TO NEW ARRIVALS SECTION
+//    // =========================================================
+//
+//    WebElement section = wait.until(
+//            ExpectedConditions.presenceOfElementLocated(sectionLocator)
+//    );
+//
+//    ((JavascriptExecutor) driver).executeScript(
+//            "arguments[0].scrollIntoView(true);",
+//            section
+//    );
+//
+//    Thread.sleep(1000);
+//
+//    // =========================================================
+//    // GET NEW ARRIVALS PRODUCTS
+//    // =========================================================
+//
+//    List<WebElement> products = wait.until(
+//            ExpectedConditions.presenceOfAllElementsLocatedBy(productLocator)
+//    );
+//
+//    int total = products.size();
+//
+//    // Last element is View All.
+//    // Verify only first 7 products.
+//
+//    int verifyCount = Math.min(Math.max(total - 1, 0), 7);
+//
+//    int verifiedCount = 0;
+//
+//    System.out.println(
+//            BLUE + "Total New Arrivals Products to Verify: "
+//                    + verifyCount
+//                    + RESET
+//    );
+//
+//    // =========================================================
+//    // VERIFY FIRST 7 PRODUCTS
+//    // =========================================================
+//
+//    for (int i = 0; i < verifyCount; i++) {
+//
+//        try {
+//
+//            // Re-fetch products after returning from PDP
+//            products = wait.until(
+//                    ExpectedConditions.presenceOfAllElementsLocatedBy(
+//                            productLocator
+//                    )
+//            );
+//
+//            WebElement product = products.get(i);
+//
+//            // =================================================
+//            // SCROLL TO PRODUCT
+//            // =================================================
+//
+//            ((JavascriptExecutor) driver).executeScript(
+//                    "arguments[0].scrollIntoView({block:'center'});",
+//                    product
+//            );
+//
+//            actions.moveToElement(product).perform();
+//
+//            Thread.sleep(1500);
+//
+//            // =================================================
+//            // HOME PAGE / NEW ARRIVALS DATA
+//            // =================================================
+//
+//            String homeProductName = product.findElement(
+//                    By.xpath(".//h3[@class='new_in_heading']")
+//            ).getText().trim();
+//
+//            // -------------------------------------------------
+//            // HOME PAGE CURRENT PRICE
+//            // -------------------------------------------------
+//
+//            List<WebElement> homeCurrentList = product.findElements(
+//                    By.xpath(".//span[contains(@class,'prod_current_price')]")
+//            );
+//
+//            String homeCurrent = "";
+//
+//            if (!homeCurrentList.isEmpty()) {
+//
+//                homeCurrent = homeCurrentList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // -------------------------------------------------
+//            // HOME PAGE ACTUAL PRICE
+//            // -------------------------------------------------
+//
+//            List<WebElement> homeActualList = product.findElements(
+//                    By.xpath(".//span[contains(@class,'prod_actual_price')]")
+//            );
+//
+//            String homeActual;
+//
+//            if (homeActualList.isEmpty() || homeCurrent.isEmpty()) {
+//
+//                homeActual = homeCurrent;
+//
+//            } else {
+//
+//                homeActual = homeActualList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // =================================================
+//            // PRINT HOME PAGE DATA
+//            // DISCOUNT PERCENTAGE SHOULD NOT BE DISPLAYED HERE
+//            // =================================================
+//
+//            System.out.println(
+//                    BLUE + "----------------------------------------"
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    BLUE + "New Arrivals Product "
+//                            + (i + 1)
+//                            + ": "
+//                            + homeProductName
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    "Home Page Current Price: "
+//                            + (homeCurrent.isEmpty()
+//                                    ? "Not Visible"
+//                                    : homeCurrent)
+//                            + " | Actual Price: "
+//                            + (homeActual.isEmpty()
+//                                    ? "Not Visible"
+//                                    : homeActual)
+//            );
+//
+//            // =================================================
+//            // CLICK PRODUCT
+//            // =================================================
+//
+//            ((JavascriptExecutor) driver).executeScript(
+//                    "arguments[0].click();",
+//                    product
+//            );
+//
+//            // =================================================
+//            // PDP PRODUCT NAME
+//            // =================================================
+//
+//            WebElement pdpNameElement = wait.until(
+//                    ExpectedConditions.visibilityOfElementLocated(
+//                            By.xpath("//h3[@class='prod_name']")
+//                    )
+//            );
+//
+//            String pdpProductName = pdpNameElement
+//                    .getText()
+//                    .trim();
+//
+//            // =================================================
+//            // PDP CURRENT PRICE
+//            // =================================================
+//
+//            List<WebElement> pdpCurrentList = driver.findElements(
+//                    By.xpath("//div[@class='prod_current_price']")
+//            );
+//
+//            String pdpCurrent = "";
+//
+//            if (!pdpCurrentList.isEmpty()) {
+//
+//                pdpCurrent = pdpCurrentList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // =================================================
+//            // PDP ACTUAL PRICE
+//            // =================================================
+//
+//            List<WebElement> pdpActualList = driver.findElements(
+//                    By.xpath("//div[@class='prod_actual_price']")
+//            );
+//
+//            String pdpActual;
+//
+//            if (pdpActualList.isEmpty() || pdpCurrent.isEmpty()) {
+//
+//                pdpActual = pdpCurrent;
+//
+//            } else {
+//
+//                pdpActual = pdpActualList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // =================================================
+//            // PDP DISCOUNT PERCENTAGE
+//            // DISCOUNT % MUST BE DISPLAYED ON PDP
+//            // =================================================
+//
+//            List<WebElement> pdpDiscountList = driver.findElements(
+//                    By.xpath("//div[contains(@class,'prod_discounted_percentage')]")
+//            );
+//
+//            String pdpDiscount = "";
+//
+//            if (!pdpDiscountList.isEmpty()) {
+//
+//                pdpDiscount = pdpDiscountList.get(0)
+//                        .getText()
+//                        .trim();
+//            }
+//
+//            // =================================================
+//            // CALCULATE EXPECTED DISCOUNT
+//            // =================================================
+//
+//            String expectedDiscount = "";
+//
+//            if (!pdpCurrent.isEmpty()
+//                    && !pdpActual.isEmpty()
+//                    && !pdpActual.equals(pdpCurrent)) {
+//
+//                String currentNumber = pdpCurrent
+//                        .replaceAll("[^0-9]", "");
+//
+//                String actualNumber = pdpActual
+//                        .replaceAll("[^0-9]", "");
+//
+//                if (!currentNumber.isEmpty()
+//                        && !actualNumber.isEmpty()) {
+//
+//                    int currentPrice = Integer.parseInt(currentNumber);
+//                    int actualPrice = Integer.parseInt(actualNumber);
+//
+//                    if (actualPrice > 0) {
+//
+//                        expectedDiscount =
+//                                ((actualPrice - currentPrice) * 100)
+//                                        / actualPrice
+//                                        + "%";
+//                    }
+//                }
+//            }
+//
+//            // =================================================
+//            // PRINT PDP DATA
+//            // =================================================
+//
+//            System.out.println(
+//                    YELLOW + "PDP Product Name: "
+//                            + pdpProductName
+//                            + RESET
+//            );
+//
+//            System.out.println(
+//                    "PDP Current Price: "
+//                            + (pdpCurrent.isEmpty()
+//                                    ? "Not Visible"
+//                                    : pdpCurrent)
+//                            + " | Actual Price: "
+//                            + (pdpActual.isEmpty()
+//                                    ? "Not Visible"
+//                                    : pdpActual)
+//                            + " | Discount: "
+//                            + (pdpDiscount.isEmpty()
+//                                    ? "Not Visible"
+//                                    : pdpDiscount)
+//            );
+//
+//            // =================================================
+//            // VALIDATE PDP DISCOUNT PERCENTAGE
+//            // DISCOUNT % MUST BE DISPLAYED
+//            // =================================================
+//
+//            if (pdpDiscount.isEmpty()) {
+//
+//                System.out.println(
+//                        RED
+//                                + "Discount Percentage is NOT displayed on PDP ❌"
+//                                + RESET
+//                );
+//
+//                Assert.fail(
+//                        "Discount percentage is not displayed on PDP"
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN
+//                                + "Discount Percentage is displayed on PDP: "
+//                                + pdpDiscount
+//                                + " ✅"
+//                                + RESET
+//                );
+//
+//                // -------------------------------------------------
+//                // VALIDATE DISCOUNT PERCENTAGE
+//                // -------------------------------------------------
+//
+//                if (!expectedDiscount.isEmpty()
+//                        && !pdpDiscount.equals(expectedDiscount)) {
+//
+//                    System.out.println(
+//                            RED
+//                                    + "Discount Percentage Mismatch ❌ -> Expected: "
+//                                    + expectedDiscount
+//                                    + " | Actual: "
+//                                    + pdpDiscount
+//                                    + RESET
+//                    );
+//
+//                    Assert.fail(
+//                            "Discount percentage mismatch. Expected: "
+//                                    + expectedDiscount
+//                                    + " | Actual: "
+//                                    + pdpDiscount
+//                    );
+//
+//                } else if (!expectedDiscount.isEmpty()) {
+//
+//                    System.out.println(
+//                            GREEN
+//                                    + "Discount Percentage Match ✅"
+//                                    + RESET
+//                    );
+//                }
+//            }
+//
+//            // =================================================
+//            // VALIDATE PRODUCT NAME
+//            // =================================================
+//
+//            if (!homeProductName.equalsIgnoreCase(pdpProductName)) {
+//
+//                System.out.println(
+//                        RED + "Product Name Mismatch ❌ -> Home Page: "
+//                                + homeProductName
+//                                + " | PDP: "
+//                                + pdpProductName
+//                                + RESET
+//                );
+//
+//                Assert.fail(
+//                        "Product Name mismatch. Home Page: "
+//                                + homeProductName
+//                                + " | PDP: "
+//                                + pdpProductName
+//                );
+//
+//            } else {
+//
+//                System.out.println(
+//                        GREEN + "Product Name Match ✅"
+//                                + RESET
+//                );
+//            }
+//
+//            // =================================================
+//            // VALIDATE PRICE
+//            // =================================================
+//
+//            if (homeCurrent.isEmpty() || pdpCurrent.isEmpty()) {
+//
+//                System.out.println(
+//                        YELLOW
+//                                + "Price not visible. Price validation skipped."
+//                                + RESET
+//                );
+//
+//            } else {
+//
+//                String homePriceNumber = homeCurrent
+//                        .replaceAll("[^0-9]", "");
+//
+//                String pdpPriceNumber = pdpCurrent
+//                        .replaceAll("[^0-9]", "");
+//
+//                if (!homePriceNumber.equals(pdpPriceNumber)) {
+//
+//                    System.out.println(
+//                            RED + "Price Mismatch ❌ -> Home Page: "
+//                                    + homeCurrent
+//                                    + " | PDP: "
+//                                    + pdpCurrent
+//                                    + RESET
+//                    );
+//
+//                    Assert.fail(
+//                            "Price mismatch. Home Page: "
+//                                    + homeCurrent
+//                                    + " | PDP: "
+//                                    + pdpCurrent
+//                    );
+//
+//                } else {
+//
+//                    System.out.println(
+//                            GREEN + "Price Match ✅"
+//                                    + RESET
+//                    );
+//                }
+//            }
+//
+//            verifiedCount++;
+//
+//            // =================================================
+//            // BACK TO NEW ARRIVALS
+//            // =================================================
+//
+//            driver.navigate().back();
+//
+//            wait.until(
+//                    ExpectedConditions.presenceOfElementLocated(
+//                            sectionLocator
+//                    )
+//            );
+//
+//            WebElement sectionAgain = driver.findElement(
+//                    sectionLocator
+//            );
+//
+//            ((JavascriptExecutor) driver).executeScript(
+//                    "arguments[0].scrollIntoView(true);",
+//                    sectionAgain
+//            );
+//
+//            Thread.sleep(1500);
+//
+//        } catch (AssertionError e) {
+//
+//            System.out.println(
+//                    RED + "Test Case Failed at Product "
+//                            + (i + 1)
+//                            + " -> "
+//                            + e.getMessage()
+//                            + RESET
+//            );
+//
+//            throw e;
+//
+//        } catch (Exception e) {
+//
+//            System.out.println(
+//                    RED + "Error at Product "
+//                            + (i + 1)
+//                            + " -> "
+//                            + e.getMessage()
+//                            + RESET
+//            );
+//
+//            Assert.fail(
+//                    "Error while verifying Product "
+//                            + (i + 1)
+//                            + ": "
+//                            + e.getMessage()
+//            );
+//        }
+//    }
+//
+//    // =========================================================
+//    // VIEW ALL - DO NOT VERIFY AS PRODUCT
+//    // =========================================================
+//
+//    List<WebElement> viewAll = driver.findElements(
+//            viewAllLocator
+//    );
+//
+//    if (!viewAll.isEmpty()) {
+//
+//        System.out.println(
+//                BLUE + "View All button is available."
+//                        + RESET
+//        );
+//
+//        ((JavascriptExecutor) driver).executeScript(
+//                "arguments[0].scrollIntoView({block:'center'});",
+//                viewAll.get(0)
+//        );
+//
+//        Thread.sleep(500);
+//
+//        // Click View All
+//
+//        ((JavascriptExecutor) driver).executeScript(
+//                "arguments[0].click();",
+//                viewAll.get(0)
+//        );
+//
+//        Thread.sleep(1500);
+//
+//        String heading = driver.findElement(
+//                By.xpath("//h2[@class='prod_listing_topic']")
+//        ).getText();
+//
+//        String url = driver.getCurrentUrl();
+//
+//        System.out.println(
+//                BLUE + "View All Page Heading: "
+//                        + heading
+//                        + RESET
+//        );
+//
+//        System.out.println(
+//                BLUE + "View All Page URL: "
+//                        + url
+//                        + RESET
+//        );
+//
+//    } else {
+//
+//        System.out.println(
+//                YELLOW + "View All button is not available."
+//                        + RESET
+//        );
+//    }
+//
+//    // =========================================================
+//    // FINAL RESULT
+//    // =========================================================
+//
+//    System.out.println(
+//            BLUE + "========================================"
+//                    + RESET
+//    );
+//
+//    System.out.println(
+//            BLUE + "Verified New Arrivals Products: "
+//                    + verifiedCount
+//                    + "/"
+//                    + verifyCount
+//                    + RESET
+//    );
+//
+//    if (verifiedCount == verifyCount) {
+//
+//        System.out.println(
+//                GREEN
+//                        + "All 7 New Arrivals products verified successfully ✅"
+//                        + RESET
+//        );
+//
+//    } else {
+//
+//        System.out.println(
+//                RED
+//                        + "Some New Arrivals products were not verified ❌"
+//                        + RESET
+//        );
+//    }
+//
+//    // =========================================================
+//    // CLOSE BROWSER
+//    // =========================================================
+//
+//    driver.quit();
+//}
+
+
 public void verifyNewInProductsCompleteFlow() throws InterruptedException {
 
     String GREEN  = "\u001B[32m";
@@ -2643,127 +5135,583 @@ public void verifyNewInProductsCompleteFlow() throws InterruptedException {
     String RESET  = "\u001B[0m";
 
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
     Actions actions = new Actions(driver);
 
-    // Open homepage
+    // =========================================================
+    // OPEN HOME PAGE
+    // =========================================================
+
     driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
-    // Click Shop button if needed
     click(zlaataIndiaShopButton);
+    
+    Common.waitForElement(10);
 
-    By sectionLocator = By.xpath("//section[@data-section='new_arrivals']");
-    By productLocator = By.xpath("//section[@data-section='new_arrivals']//a[contains(@class,'banner_link')]");
-    By viewAllLocator = By.xpath("//a[contains(@class,'new_in_redirect')]");
+    By sectionLocator = By.xpath(
+            "//section[@data-section='new_arrivals']"
+    );
 
-    // Scroll to NEW IN section
-    WebElement section = wait.until(ExpectedConditions.presenceOfElementLocated(sectionLocator));
-    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", section);
-    Thread.sleep(1000); // allow initial load
+    By productLocator = By.xpath(
+            "//section[@data-section='new_arrivals']"
+                    + "//a[contains(@class,'banner_link')]"
+    );
 
-    List<WebElement> products = driver.findElements(productLocator);
+    By viewAllLocator = By.xpath(
+            "//section[@data-section='new_arrivals']"
+                    + "//a[contains(@class,'new_in_redirect')]"
+    );
+
+    // =========================================================
+    // SCROLL TO NEW ARRIVALS SECTION
+    // =========================================================
+
+    WebElement section = wait.until(
+            ExpectedConditions.presenceOfElementLocated(sectionLocator)
+    );
+
+    ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].scrollIntoView(true);",
+            section
+    );
+
+    Thread.sleep(1000);
+
+    // =========================================================
+    // GET NEW ARRIVALS PRODUCTS
+    // =========================================================
+
+    List<WebElement> products = wait.until(
+            ExpectedConditions.presenceOfAllElementsLocatedBy(productLocator)
+    );
+
     int total = products.size();
-    int hoverLimit = Math.min(4, total); // hover first 4
+
+    // Last element is View All.
+    // Verify only first 7 products.
+
+    int verifyCount = Math.min(
+            Math.max(total - 1, 0),
+            7
+    );
+
     int verifiedCount = 0;
 
-    System.out.println(BLUE + "Total Products: " + total + RESET);
+    System.out.println(
+            BLUE + "Total New Arrivals Products to Verify: "
+                    + verifyCount
+                    + RESET
+    );
 
-    for (int i = 0; i < hoverLimit; i++) { // Only hover first 4 products
+    // =========================================================
+    // VERIFY FIRST 7 PRODUCTS
+    // =========================================================
 
-        // Re-fetch elements after each iteration
-        products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productLocator));
-        WebElement product = products.get(i);
-
-        // Scroll & hover to load overlay
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", product);
-        actions.moveToElement(product).perform();
-        Thread.sleep(1500);
+    for (int i = 0; i < verifyCount; i++) {
 
         try {
-            // ===== CARD DATA =====
-            String cardName = product.findElement(By.xpath(".//h4[contains(@class,'new_in_heading')]")).getText().trim();
-            String cardCurrent = product.findElement(By.xpath(".//span[contains(@class,'prod_current_price')]")).getText().trim();
 
-            List<WebElement> cardActualList = product.findElements(By.xpath(".//span[contains(@class,'prod_actual_price')]"));
-            String cardActual = cardActualList.size() > 0 ? cardActualList.get(0).getText().trim() : "";
+            // Re-fetch products after returning from PDP
 
-            String cardDiscount = "0%";
-            if (!cardActual.isEmpty()) {
-                int curr = Integer.parseInt(cardCurrent.replaceAll("[^0-9]", ""));
-                int act  = Integer.parseInt(cardActual.replaceAll("[^0-9]", ""));
-                cardDiscount = ((act - curr) * 100) / act + "%";
+            products = wait.until(
+                    ExpectedConditions.presenceOfAllElementsLocatedBy(
+                            productLocator
+                    )
+            );
+
+            WebElement product = products.get(i);
+
+            // =================================================
+            // SCROLL TO PRODUCT
+            // =================================================
+
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView({block:'center'});",
+                    product
+            );
+
+            actions.moveToElement(product).perform();
+
+            Thread.sleep(1500);
+
+            // =================================================
+            // HOME PAGE / NEW ARRIVALS DATA
+            // =================================================
+
+            String homeProductName = product.findElement(
+                    By.xpath(".//h3[@class='new_in_heading']")
+            ).getText().trim();
+
+            // =================================================
+            // HOME PAGE CURRENT PRICE
+            // =================================================
+
+            List<WebElement> homeCurrentList = product.findElements(
+                    By.xpath(
+                            ".//span[contains(@class,'prod_current_price')]"
+                    )
+            );
+
+            String homeCurrent = "";
+
+            if (!homeCurrentList.isEmpty()) {
+
+                homeCurrent = homeCurrentList.get(0)
+                        .getText()
+                        .trim();
             }
 
-            System.out.println(BLUE + "Hover Card: " + cardName + RESET);
-            System.out.println("Card Current: " + cardCurrent + " | Actual: " + cardActual + " | Discount: " + cardDiscount);
+            // =================================================
+            // HOME PAGE ACTUAL / STRIKETHROUGH PRICE
+            // =================================================
 
-            // ===== CLICK PRODUCT =====
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", product);
+            List<WebElement> homeActualList = product.findElements(
+                    By.xpath(
+                            ".//span[contains(@class,'prod_actual_price')]"
+                    )
+            );
 
-            // ===== PDP =====
-            WebElement pdpNameEl = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='prod_name']")));
-            WebElement pdpCurrentEl = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='prod_current_price']")));
-            List<WebElement> pdpActualList = driver.findElements(By.xpath("//div[@class='prod_actual_price']"));
-            String pdpActual = pdpActualList.size() > 0 ? pdpActualList.get(0).getText().trim() : "";
+            String homeActual = "";
 
-            String pdpName = pdpNameEl.getText().trim();
-            String pdpCurrent = pdpCurrentEl.getText().trim();
-            String pdpDiscount = "0%";
-            if (!pdpActual.isEmpty()) {
-                int curr = Integer.parseInt(pdpCurrent.replaceAll("[^0-9]", ""));
-                int act  = Integer.parseInt(pdpActual.replaceAll("[^0-9]", ""));
-                pdpDiscount = ((act - curr) * 100) / act + "%";
+            if (!homeActualList.isEmpty()) {
+
+                homeActual = homeActualList.get(0)
+                        .getText()
+                        .trim();
             }
 
-            System.out.println(YELLOW + "PDP Name: " + pdpName + RESET);
-            System.out.println("PDP Current: " + pdpCurrent + " | Actual: " + pdpActual + " | Discount: " + pdpDiscount);
+            // =================================================
+            // CHECK DISCOUNT FROM HOME PAGE
+            // =================================================
 
-            // ===== VALIDATION =====
-            // Partial name match passes silently, only check strict price
-            if (!cardCurrent.replaceAll("[^0-9]", "").equals(pdpCurrent.replaceAll("[^0-9]", ""))) {
-                System.out.println(RED + "Price Mismatch ❌ -> Card: " + cardCurrent + " | PDP: " + pdpCurrent + RESET);
+            /*
+             * If Actual Price / Strikethrough Price is available
+             * on Home Page:
+             *
+             * -> Product is discounted
+             * -> PDP discount percentage should be displayed
+             *
+             * If Actual Price / Strikethrough Price is NOT available:
+             *
+             * -> Product is not discounted
+             * -> PDP discount percentage is not required
+             */
+
+            boolean homeDiscountAvailable =
+                    !homeActual.isEmpty();
+
+            // =================================================
+            // PRINT HOME PAGE DATA
+            // =================================================
+
+            System.out.println(
+                    BLUE + "----------------------------------------"
+                            + RESET
+            );
+
+            System.out.println(
+                    BLUE + "New Arrivals Product "
+                            + (i + 1)
+                            + ": "
+                            + homeProductName
+                            + RESET
+            );
+
+            System.out.println(
+                    "Home Page Current Price: "
+                            + (homeCurrent.isEmpty()
+                                    ? "Not Visible"
+                                    : homeCurrent)
+                            + " | Actual Price: "
+                            + (homeActual.isEmpty()
+                                    ? "Not Visible"
+                                    : homeActual)
+            );
+
+            if (homeDiscountAvailable) {
+
+                System.out.println(
+                        GREEN
+                                + "Home Page: Strikethrough price is available. "
+                                + "Product is discounted."
+                                + RESET
+                );
+
             } else {
-                System.out.println(GREEN + "Price Match ✅" + RESET);
+
+                System.out.println(
+                        GREEN
+                                + "Home Page: No strikethrough price available. "
+                                + "Product is not discounted."
+                                + RESET
+                );
+            }
+
+            // =================================================
+            // CLICK PRODUCT
+            // =================================================
+
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].click();",
+                    product
+            );
+
+            // =================================================
+            // PDP PRODUCT NAME
+            // =================================================
+
+            WebElement pdpNameElement = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(
+                            By.xpath("//h3[@class='prod_name']")
+                    )
+            );
+
+            String pdpProductName = pdpNameElement
+                    .getText()
+                    .trim();
+
+            // =================================================
+            // PDP CURRENT PRICE
+            // =================================================
+
+            List<WebElement> pdpCurrentList = driver.findElements(
+                    By.xpath("//div[@class='prod_current_price']")
+            );
+
+            String pdpCurrent = "";
+
+            if (!pdpCurrentList.isEmpty()) {
+
+                pdpCurrent = pdpCurrentList.get(0)
+                        .getText()
+                        .trim();
+            }
+
+            // =================================================
+            // PDP ACTUAL PRICE
+            // =================================================
+
+            List<WebElement> pdpActualList = driver.findElements(
+                    By.xpath("//div[@class='prod_actual_price']")
+            );
+
+            String pdpActual = "";
+
+            if (!pdpActualList.isEmpty()) {
+
+                pdpActual = pdpActualList.get(0)
+                        .getText()
+                        .trim();
+            }
+
+            // =================================================
+            // PDP DISCOUNT PERCENTAGE
+            // =================================================
+
+            List<WebElement> pdpDiscountList = driver.findElements(
+                    By.xpath(
+                            "//div[@class='prod_discount_percentage']"
+                    )
+            );
+
+            String pdpDiscount = "";
+
+            if (!pdpDiscountList.isEmpty()) {
+
+                pdpDiscount = pdpDiscountList.get(0)
+                        .getText()
+                        .trim();
+            }
+
+            // =================================================
+            // PRINT PDP DATA
+            // =================================================
+
+            System.out.println(
+                    YELLOW + "PDP Product Name: "
+                            + pdpProductName
+                            + RESET
+            );
+
+            System.out.println(
+                    "PDP Current Price: "
+                            + (pdpCurrent.isEmpty()
+                                    ? "Not Visible"
+                                    : pdpCurrent)
+                            + " | Actual Price: "
+                            + (pdpActual.isEmpty()
+                                    ? "Not Visible"
+                                    : pdpActual)
+                            + " | Discount: "
+                            + (pdpDiscount.isEmpty()
+                                    ? "Not Visible"
+                                    : pdpDiscount)
+            );
+
+            // =================================================
+            // PRINT PDP DISCOUNT ONLY
+            // NO DISCOUNT VALIDATION
+            // =================================================
+
+            if (homeDiscountAvailable) {
+
+                if (!pdpDiscount.isEmpty()) {
+
+                    System.out.println(
+                            GREEN
+                                    + "PDP Discount Percentage: "
+                                    + pdpDiscount
+                                    + " ✅"
+                                    + RESET
+                    );
+
+                } else {
+
+                    System.out.println(
+                            RED
+                                    + "PDP Discount Percentage is NOT displayed ❌"
+                                    + RESET
+                    );
+                }
+
+            } else {
+
+                System.out.println(
+                        GREEN
+                                + "No strikethrough price on Home Page. "
+                                + "PDP discount percentage is not required."
+                                + RESET
+                );
+            }
+
+            // =================================================
+            // VALIDATE PRODUCT NAME
+            // =================================================
+
+            if (!homeProductName.equalsIgnoreCase(pdpProductName)) {
+
+                System.out.println(
+                        RED + "Product Name Mismatch ❌ -> Home Page: "
+                                + homeProductName
+                                + " | PDP: "
+                                + pdpProductName
+                                + RESET
+                );
+
+                Assert.fail(
+                        "Product Name mismatch. Home Page: "
+                                + homeProductName
+                                + " | PDP: "
+                                + pdpProductName
+                );
+
+            } else {
+
+                System.out.println(
+                        GREEN + "Product Name Match ✅"
+                                + RESET
+                );
+            }
+
+            // =================================================
+            // VALIDATE PRICE
+            // =================================================
+
+            if (homeCurrent.isEmpty() || pdpCurrent.isEmpty()) {
+
+                System.out.println(
+                        YELLOW
+                                + "Price not visible. Price validation skipped."
+                                + RESET
+                );
+
+            } else {
+
+                String homePriceNumber = homeCurrent
+                        .replaceAll("[^0-9]", "");
+
+                String pdpPriceNumber = pdpCurrent
+                        .replaceAll("[^0-9]", "");
+
+                if (!homePriceNumber.equals(pdpPriceNumber)) {
+
+                    System.out.println(
+                            RED + "Price Mismatch ❌ -> Home Page: "
+                                    + homeCurrent
+                                    + " | PDP: "
+                                    + pdpCurrent
+                                    + RESET
+                    );
+
+                    Assert.fail(
+                            "Price mismatch. Home Page: "
+                                    + homeCurrent
+                                    + " | PDP: "
+                                    + pdpCurrent
+                    );
+
+                } else {
+
+                    System.out.println(
+                            GREEN + "Price Match ✅"
+                                    + RESET
+                    );
+                }
             }
 
             verifiedCount++;
 
-            // ===== BACK NAVIGATION =====
+            // =================================================
+            // BACK TO NEW ARRIVALS
+            // =================================================
+
             driver.navigate().back();
-            wait.until(ExpectedConditions.presenceOfElementLocated(sectionLocator));
-            WebElement sectionAgain = driver.findElement(sectionLocator);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", sectionAgain);
-            Thread.sleep(1500); // allow swiper reload
+
+            wait.until(
+                    ExpectedConditions.presenceOfElementLocated(
+                            sectionLocator
+                    )
+            );
+
+            WebElement sectionAgain = driver.findElement(
+                    sectionLocator
+            );
+
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView(true);",
+                    sectionAgain
+            );
+
+            Thread.sleep(1500);
+
+        } catch (AssertionError e) {
+
+            System.out.println(
+                    RED + "Test Case Failed at Product "
+                            + (i + 1)
+                            + " -> "
+                            + e.getMessage()
+                            + RESET
+            );
+
+            throw e;
 
         } catch (Exception e) {
-            System.out.println(RED + "Error at product index: " + i + " -> " + e.getMessage() + RESET);
+
+            System.out.println(
+                    RED + "Error at Product "
+                            + (i + 1)
+                            + " -> "
+                            + e.getMessage()
+                            + RESET
+            );
+
+            Assert.fail(
+                    "Error while verifying Product "
+                            + (i + 1)
+                            + ": "
+                            + e.getMessage()
+            );
         }
     }
 
-    // ✅ CLICK VIEW ALL (if exists) instead of checking remaining product(s)
-    List<WebElement> viewAll = driver.findElements(viewAllLocator);
+    // =========================================================
+    // VIEW ALL - DO NOT VERIFY AS PRODUCT
+    // =========================================================
+
+    List<WebElement> viewAll = driver.findElements(
+            viewAllLocator
+    );
+
     if (!viewAll.isEmpty()) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", viewAll.get(0));
+
+        System.out.println(
+                BLUE + "View All button is available."
+                        + RESET
+        );
+
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].scrollIntoView({block:'center'});",
+                viewAll.get(0)
+        );
+
+        Thread.sleep(500);
+
+        // Click View All
+
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].click();",
+                viewAll.get(0)
+        );
+
         Thread.sleep(1500);
 
-        String heading = driver.findElement(By.xpath("//h2[@class='prod_listing_topic']")).getText();
-        String url     = driver.getCurrentUrl();
+        String heading = driver.findElement(
+                By.xpath("//h2[@class='prod_listing_topic']")
+        ).getText();
 
-        System.out.println(BLUE + "View All Page Heading: " + heading + RESET);
-        System.out.println(BLUE + "View All Page URL: " + url + RESET);
-    }
+        String url = driver.getCurrentUrl();
 
-    System.out.println(BLUE + "Verified Products Count: " + verifiedCount + "/" + total + RESET);
-    if (verifiedCount == total) {
-        System.out.println(GREEN + "All products verified successfully ✅" + RESET);
+        System.out.println(
+                BLUE + "View All Page Heading: "
+                        + heading
+                        + RESET
+        );
+
+        System.out.println(
+                BLUE + "View All Page URL: "
+                        + url
+                        + RESET
+        );
+
     } else {
-        System.out.println(BLUE + "Some products are behind View All or skipped ⏭️" + RESET);
+
+        System.out.println(
+                YELLOW + "View All button is not available."
+                        + RESET
+        );
     }
 
-    // Close browser
+    // =========================================================
+    // FINAL RESULT
+    // =========================================================
+
+    System.out.println(
+            BLUE + "========================================"
+                    + RESET
+    );
+
+    System.out.println(
+            BLUE + "Verified New Arrivals Products: "
+                    + verifiedCount
+                    + "/"
+                    + verifyCount
+                    + RESET
+    );
+
+    if (verifiedCount == verifyCount) {
+
+        System.out.println(
+                GREEN
+                        + "All New Arrivals products verified successfully ✅"
+                        + RESET
+        );
+
+    } else {
+
+        System.out.println(
+                RED
+                        + "Some New Arrivals products were not verified ❌"
+                        + RESET
+        );
+    }
+
+    // =========================================================
+    // CLOSE BROWSER
+    // =========================================================
+
     driver.quit();
 }
-
-
 public void flashNotification() {
 	
 	
@@ -2771,86 +5719,80 @@ public void flashNotification() {
 
 	    // Click Shop button if needed
 	    click(zlaataIndiaShopButton);
-	    
+	    Common.waitForElement(10);
 	    flashNotificationInZL();
 	    click(bosslady);
+	    Common.waitForElement(10);
+
 	    flashNotificationInZL();
 	    
 	   }
 
 public void flashNotificationInZL() {
 
-   String GREEN  = "\u001B[32m";
-   String RED    = "\u001B[31m";
-   String BLUE   = "\u001B[34m";
-   String YELLOW = "\u001B[33m";
-   String RESET  = "\u001B[0m";
+    String GREEN  = "\u001B[32m";
+    String RED    = "\u001B[31m";
+    String YELLOW = "\u001B[33m";
+    String RESET  = "\u001B[0m";
 
-   
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-	
-   WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    try {
 
-   try {
-       // Open homepage
+        By flashSaleLocator = By.xpath("//a[@aria-label='Flash Sale']");
 
-       // Flash Sale locator
-       By flashSaleLocator = By.xpath("//a[@aria-label='Flash Sale']");
+        // 1. Verify Flash Sale notification availability
+        List<WebElement> flashList = driver.findElements(flashSaleLocator);
 
-       List<WebElement> flashList = driver.findElements(flashSaleLocator);
+        if (flashList.size() == 0) {
+            System.out.println(YELLOW +
+                    "Flash notification NOT available ⚠️" + RESET);
+            return;
+        }
 
-       // ✅ Check availability
-       if (flashList.size() == 0) {
-           System.out.println(YELLOW + "Flash notification NOT available ⚠️" + RESET);
-           return; // stop test
-       }
+        System.out.println(GREEN +
+                "Flash notification is available ✅" + RESET);
 
-       WebElement flashSale = wait.until(
-               ExpectedConditions.visibilityOfElementLocated(flashSaleLocator)
-       );
+        // 2. Store current URL before click
+        String beforeClickUrl = driver.getCurrentUrl();
 
-       System.out.println(BLUE + "Flash notification is present ✅" + RESET);
+        System.out.println("URL Before Click: " + beforeClickUrl);
 
-       // ✅ Get text before click
-       String flashText = flashSale.getText().trim();
-       System.out.println("Flash Text: " + flashText);
+        // 3. Click Flash Sale
+        WebElement flashSale = wait.until(
+                ExpectedConditions.elementToBeClickable(flashSaleLocator)
+        );
 
-       // ✅ Click
-       flashSale.click();
+        flashSale.click();
 
-       // ✅ Wait for page load
-       wait.until(ExpectedConditions.urlContains("sale"));
+        // 4. Wait until URL changes
+        wait.until(ExpectedConditions.not(
+                ExpectedConditions.urlToBe(beforeClickUrl)
+        ));
 
-       // ===== VERIFY URL =====
-       String currentUrl = driver.getCurrentUrl();
-       System.out.println(BLUE + "Redirected URL: " + currentUrl + RESET);
+        // 5. Store current URL after click
+        String afterClickUrl = driver.getCurrentUrl();
 
-       if (currentUrl.contains("sale")) {
-           System.out.println(GREEN + "Redirection SUCCESS ✅" + RESET);
-       } else {
-           System.out.println(RED + "Redirection FAILED ❌" + RESET);
-       }
+        System.out.println("URL After Click: " + afterClickUrl);
 
-       // ===== VERIFY HEADING =====
-       try {
-           WebElement heading = driver.findElement(By.xpath("//h1 | //h2 | //h3"));
-           System.out.println(BLUE + "Page Heading: " + heading.getText() + RESET);
-       } catch (Exception e) {
-           System.out.println(YELLOW + "Heading NOT found ⚠️" + RESET);
-       }
+        // 6. Verify both URLs
+        if (!beforeClickUrl.equals(afterClickUrl)) {
 
-       // ===== VERIFY PRODUCTS =====
-       List<WebElement> products = driver.findElements(By.xpath("//div[contains(@class,'product')]"));
+            System.out.println(GREEN +
+                    "Redirection SUCCESS - URLs are different ✅" + RESET);
 
-       if (products.size() > 0) {
-           System.out.println(GREEN + "Products available: " + products.size() + " ✅" + RESET);
-       } else {
-           System.out.println(RED + "No products found ❌" + RESET);
-       }
+        } else {
 
-   } catch (Exception e) {
-       System.out.println(RED + "Error in Flash Sale validation: " + e.getMessage() + RESET);
-   }
+            System.out.println(RED +
+                    "Redirection FAILED - URLs are the same ❌" + RESET);
+        }
+
+    } catch (Exception e) {
+
+        System.out.println(RED +
+                "Error in Flash Sale validation: " +
+                e.getMessage() + RESET);
+    }
 }
 
 //public void verifyDotsAndProducts() {

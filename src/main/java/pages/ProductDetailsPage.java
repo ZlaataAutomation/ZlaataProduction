@@ -24,6 +24,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import groovyjarjarantlr4.v4.runtime.tree.xpath.XPath;
 import io.cucumber.java.Scenario;
 import manager.FileReaderManager;
 import objectRepo.ProductDetailsPageObjRepo;
@@ -94,6 +95,9 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
 	    click(zlaataIndiaShopButton);
+	    
+	    
+	    Common.waitForElement(10);
 
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	    Actions actions = new Actions(driver);
@@ -257,6 +261,8 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 
 	    click(zlaataIndiaShopButton);
 	    
+	    Common.waitForElement(10);
+	    
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	    Actions actions = new Actions(driver);
 
@@ -359,6 +365,259 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 			backArrowElements.get(0).click();
 		}
 	}
+//	public void wishList() {
+//
+//	    String GREEN = "\u001B[32m";
+//	    String RED   = "\u001B[31m";
+//	    String CYAN  = "\u001B[36m";
+//	    String BLUE  = "\u001B[34m";
+//	    String RESET = "\u001B[0m";
+//
+//	    System.out.println(CYAN + "────────────────────────────────────────────" + RESET);
+//
+//	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+//	    
+//	    
+//	    
+//	    click(zlaataIndiaShopButton);
+//	    
+//	    click(wishListButton);
+//	    
+//	    click(zlaataIndiaShopButton);
+//	    click(wishListButton);
+//
+//	    while (!removeProductFromWishListPage.isEmpty()) {
+//	        removeProductFromWishListPage.get(0).click();
+//	    }
+//
+//	 
+//	 
+//	    
+//
+//	    
+//	    
+//	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//	    Actions actions = new Actions(driver);
+//
+//	    System.out.println(BLUE + "🔍 Navigating to category..." + RESET);
+//
+//	    actions.moveToElement(shopMenu).perform();
+//	    actions.moveToElement(category).click().perform();
+//	    Common.waitForElement(2);
+//	    // Pick random product
+//	    List<WebElement> products = wait.until(
+//	            ExpectedConditions.visibilityOfAllElementsLocatedBy(
+//	                    By.xpath("//div[@class='prod_listing_card']")
+//	            )
+//	    );
+//
+//	    Assert.assertTrue("❌ No products found", products.size() > 0);
+//	    Collections.shuffle(products);
+//	    products.get(0).click();
+//
+//	    // Wishlist button
+//	    WebElement wishlistBtn = wait.until(
+//	            ExpectedConditions.visibilityOfElementLocated(
+//	                    By.xpath("(//div[contains(@class,'prod_wishlist_btn')])[2]")
+//	            )
+//	    );
+//
+//	    String classBefore = wishlistBtn.getAttribute("class");
+//
+//	    System.out.println(CYAN + "💡 Wishlist class before: " + classBefore + RESET);
+//
+//	    // ✅ If already liked → do nothing
+//	    if (classBefore.contains("liked")) {
+//	        System.out.println(GREEN + "❤️ Already added to wishlist. No action needed." + RESET);
+//	    }
+//	    else {
+//	        System.out.println(BLUE + "🤍 Not in wishlist → Clicking..." + RESET);
+//
+//	        ((JavascriptExecutor) driver)
+//	                .executeScript("arguments[0].click();", wishlistBtn);
+//
+//	        // Wait until liked class appears
+//	        wait.until(ExpectedConditions.attributeContains(
+//	                wishlistBtn, "class", "liked"
+//	        ));
+//
+//	        String classAfter = wishlistBtn.getAttribute("class");
+//
+//	        Assert.assertTrue(
+//	                RED + "❌ Wishlist not added!",
+//	                classAfter.contains("liked")
+//	        );
+//
+//	        System.out.println(GREEN + "❤️ Wishlist added successfully!" + RESET);
+//	    }
+//	}
+	
+//	public void wishList() {
+//
+//	    String GREEN = "\u001B[32m";
+//	    String RED   = "\u001B[31m";
+//	    String CYAN  = "\u001B[36m";
+//	    String BLUE  = "\u001B[34m";
+//	    String RESET = "\u001B[0m";
+//
+//	    System.out.println(CYAN + "────────────────────────────────────────────" + RESET);
+//
+//	    driver.get(FileReaderManager.getInstance()
+//	            .getConfigReader()
+//	            .getApplicationUrl());
+//
+//	    // Navigate to Wishlist
+//	    click(zlaataIndiaShopButton);
+//	    click(wishListButton);
+//
+//	    Common.waitForElement(2);
+//
+//	    // Remove all existing wishlist products
+//	    System.out.println(BLUE + "🗑️ Removing existing wishlist products..." + RESET);
+//
+//	    while (!removeProductFromWishListPage.isEmpty()) {
+//	        removeProductFromWishListPage.get(0).click();
+//	        Common.waitForElement(1);
+//	    }
+//
+//	    System.out.println(
+//	            GREEN + "✅ Existing wishlist products removed." + RESET
+//	    );
+//
+//	    WebDriverWait wait = new WebDriverWait(
+//	            driver,
+//	            Duration.ofSeconds(15)
+//	    );
+//
+//	    Actions actions = new Actions(driver);
+//
+//	    // Navigate to Category
+//	    System.out.println(
+//	            BLUE + "🔍 Navigating to category..." + RESET
+//	    );
+//
+//	    actions.moveToElement(shopMenu).perform();
+//	    actions.moveToElement(category).click().perform();
+//
+//	    Common.waitForElement(2);
+//
+//	    // Pick random product
+//	    List<WebElement> products = wait.until(
+//	            ExpectedConditions.visibilityOfAllElementsLocatedBy(
+//	                    By.xpath("//div[@class='prod_listing_card']")
+//	            )
+//	    );
+//
+//	    Assert.assertTrue(
+//	            RED + "❌ No products found",
+//	            products.size() > 0
+//	    );
+//
+//	    Collections.shuffle(products);
+//
+//	    products.get(0).click();
+//
+//	    Common.waitForElement(2);
+//
+//	    // Capture Product Name
+//	    WebElement productNameElement = wait.until(
+//	            ExpectedConditions.visibilityOfElementLocated(
+//	                    By.xpath("//h3[@class='prod_name']")
+//	            )
+//	    );
+//
+//	    String productName = productNameElement.getText().trim();
+//
+//	    System.out.println(
+//	            CYAN + "🛍️ Selected Product: "
+//	                    + productName
+//	                    + RESET
+//	    );
+//
+//	    // Wishlist button
+//	    WebElement wishlistBtn = wait.until(
+//	            ExpectedConditions.visibilityOfElementLocated(
+//	                    By.xpath("(//div[contains(@class,'prod_wishlist_btn')])[2]")
+//	            )
+//	    );
+//
+//	    String classBefore = wishlistBtn.getAttribute("class");
+//
+//	    System.out.println(
+//	            CYAN + "💡 Wishlist class before: "
+//	                    + classBefore
+//	                    + RESET
+//	    );
+//
+//	    // Add product to Wishlist
+//	    if (!classBefore.contains("liked")) {
+//
+//	        System.out.println(
+//	                BLUE + "🤍 Adding product to Wishlist..." + RESET
+//	        );
+//
+//	        ((JavascriptExecutor) driver)
+//	                .executeScript(
+//	                        "arguments[0].click();",
+//	                        wishlistBtn
+//	                );
+//
+//	        // Wait until liked class appears
+//	        wait.until(
+//	                ExpectedConditions.attributeContains(
+//	                        wishlistBtn,
+//	                        "class",
+//	                        "liked"
+//	                )
+//	        );
+//
+//	        String classAfter = wishlistBtn.getAttribute("class");
+//
+//	        Assert.assertTrue(
+//	                RED + "❌ Wishlist not added!",
+//	                classAfter.contains("liked")
+//	        );
+//
+//	        System.out.println(
+//	                GREEN + "❤️ Wishlist added successfully!" + RESET
+//	        );
+//
+//	    } else {
+//
+//	        System.out.println(
+//	                GREEN + "❤️ Product is already in Wishlist." + RESET
+//	        );
+//	    }
+//
+//	    // Navigate to Wishlist page
+//	    System.out.println(
+//	            BLUE + "🔍 Navigating to Wishlist page..." + RESET
+//	    );
+//
+//	    click(wishListButton);
+//
+//	    Common.waitForElement(2);
+//
+//	    WebElement wishlistProduct = wait.until(
+//	            ExpectedConditions.visibilityOfElementLocated(
+//	                    By.xpath("//a[@class='product_list_name']")
+//	            )
+//	    );
+//
+//	    String wishlistProduct1 = wishlistProduct.getText().trim();
+//
+//	    Assert.assertEquals(
+//	            productName,
+//	            wishlistProduct1
+//	    );
+//
+//	    System.out.println(
+//	            GREEN + "✅ Product name verified in Wishlist: "
+//	            + wishlistProduct1 + RESET
+//	    );
+//	}
+//	
+	
 	public void wishList() {
 
 	    String GREEN = "\u001B[32m";
@@ -367,20 +626,58 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 	    String BLUE  = "\u001B[34m";
 	    String RESET = "\u001B[0m";
 
-	    System.out.println(CYAN + "────────────────────────────────────────────" + RESET);
+	    System.out.println(
+	            CYAN + "────────────────────────────────────────────" + RESET
+	    );
 
-	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
-	    
+	    driver.get(
+	            FileReaderManager.getInstance()
+	                    .getConfigReader()
+	                    .getApplicationUrl()
+	    );
+
+	    // Navigate to Wishlist
 	    click(zlaataIndiaShopButton);
+	    
+	    Common.waitForElement(10);
 
-	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+	    click(wishListButton);
+	    Common.waitForElement(2);
+
+	    // Remove all existing wishlist products
+	    System.out.println(
+	            BLUE + "🗑️ Removing existing wishlist products..." + RESET
+	    );
+
+	    while (!removeProductFromWishListPage.isEmpty()) {
+
+	        removeProductFromWishListPage.get(0).click();
+
+	        Common.waitForElement(1);
+	    }
+
+	    System.out.println(
+	            GREEN + "✅ Existing wishlist products removed." + RESET
+	    );
+
+	    WebDriverWait wait = new WebDriverWait(
+	            driver,
+	            Duration.ofSeconds(15)
+	    );
+
 	    Actions actions = new Actions(driver);
 
-	    System.out.println(BLUE + "🔍 Navigating to category..." + RESET);
+	    // Navigate to Category
+	    System.out.println(
+	            BLUE + "🔍 Navigating to category..." + RESET
+	    );
 
 	    actions.moveToElement(shopMenu).perform();
+
 	    actions.moveToElement(category).click().perform();
+
 	    Common.waitForElement(2);
+
 	    // Pick random product
 	    List<WebElement> products = wait.until(
 	            ExpectedConditions.visibilityOfAllElementsLocatedBy(
@@ -388,35 +685,69 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 	            )
 	    );
 
-	    Assert.assertTrue("❌ No products found", products.size() > 0);
+	    Assert.assertTrue(
+	            RED + "❌ No products found",
+	            products.size() > 0
+	    );
+
 	    Collections.shuffle(products);
+
 	    products.get(0).click();
+
+	    Common.waitForElement(2);
+
+	    // Capture Product Name
+	    WebElement productNameElement = wait.until(
+	            ExpectedConditions.visibilityOfElementLocated(
+	                    By.xpath("//h3[@class='prod_name']")
+	            )
+	    );
+
+	    String productName = productNameElement.getText().trim();
+
+	    System.out.println(
+	            CYAN + "🛍️ Selected Product: "
+	                    + productName
+	                    + RESET
+	    );
 
 	    // Wishlist button
 	    WebElement wishlistBtn = wait.until(
 	            ExpectedConditions.visibilityOfElementLocated(
-	                    By.xpath("(//div[contains(@class,'prod_wishlist_btn')])[2]")
+	                    By.xpath(
+	                            "(//div[contains(@class,'prod_wishlist_btn')])[2]"
+	                    )
 	            )
 	    );
 
 	    String classBefore = wishlistBtn.getAttribute("class");
 
-	    System.out.println(CYAN + "💡 Wishlist class before: " + classBefore + RESET);
+	    System.out.println(
+	            CYAN + "💡 Wishlist class before: "
+	                    + classBefore
+	                    + RESET
+	    );
 
-	    // ✅ If already liked → do nothing
-	    if (classBefore.contains("liked")) {
-	        System.out.println(GREEN + "❤️ Already added to wishlist. No action needed." + RESET);
-	    }
-	    else {
-	        System.out.println(BLUE + "🤍 Not in wishlist → Clicking..." + RESET);
+	    // Add product to Wishlist
+	    if (!classBefore.contains("liked")) {
 
-	        ((JavascriptExecutor) driver)
-	                .executeScript("arguments[0].click();", wishlistBtn);
+	        System.out.println(
+	                BLUE + "🤍 Adding product to Wishlist..." + RESET
+	        );
+
+	        ((JavascriptExecutor) driver).executeScript(
+	                "arguments[0].click();",
+	                wishlistBtn
+	        );
 
 	        // Wait until liked class appears
-	        wait.until(ExpectedConditions.attributeContains(
-	                wishlistBtn, "class", "liked"
-	        ));
+	        wait.until(
+	                ExpectedConditions.attributeContains(
+	                        wishlistBtn,
+	                        "class",
+	                        "liked"
+	                )
+	        );
 
 	        String classAfter = wishlistBtn.getAttribute("class");
 
@@ -425,9 +756,62 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 	                classAfter.contains("liked")
 	        );
 
-	        System.out.println(GREEN + "❤️ Wishlist added successfully!" + RESET);
+	        System.out.println(
+	                GREEN + "❤️ Wishlist added successfully!" + RESET
+	        );
+
+	    } else {
+
+	        System.out.println(
+	                GREEN + "❤️ Product is already in Wishlist." + RESET
+	        );
 	    }
+
+	    // Navigate to Wishlist page
+	    System.out.println(
+	            BLUE + "🔍 Navigating to Wishlist page..." + RESET
+	    );
+
+	    click(wishListButton);
+
+	    Common.waitForElement(2);
+
+	    // Get Wishlist Product Name
+	    WebElement wishlistProduct = wait.until(
+	            ExpectedConditions.visibilityOfElementLocated(
+	                    By.xpath("//a[@class='product_list_name']")
+	            )
+	    );
+
+	    String wishlistProduct1 = wishlistProduct.getText().trim();
+
+	    System.out.println(
+	            CYAN + "🛍️ Wishlist Product: "
+	                    + wishlistProduct1
+	                    + RESET
+	    );
+
+	    // Verify Product Name - Case Insensitive
+	    Assert.assertTrue(
+	            RED + "❌ Product name mismatch! Expected: "
+	                    + productName
+	                    + " | Actual: "
+	                    + wishlistProduct1,
+	            productName.equalsIgnoreCase(wishlistProduct1)
+	    );
+
+	    System.out.println(
+	            GREEN + "✅ Product name verified in Wishlist: "
+	                    + wishlistProduct1
+	                    + RESET
+	    );
+
+	    System.out.println(
+	            GREEN + "❤️ Wishlist functionality verified successfully!"
+	                    + RESET
+	    );
 	}
+
 	public void verifyBestPriceCalculation() {
 		LoginPage login = new LoginPage(driver);
 		login.userLogin();
@@ -609,6 +993,7 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    click(zlaataIndiaShopButton);
 	    
+	    Common.waitForElement(10);
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	    Actions actions = new Actions(driver);
@@ -801,7 +1186,8 @@ Thread.sleep(2000);
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    click(zlaataIndiaShopButton);
 
-	    
+	    Common.waitForElement(10);
+
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	    Actions actions = new Actions(driver);
@@ -811,6 +1197,8 @@ Thread.sleep(2000);
 	    actions.moveToElement(shopMenu).perform();
 	    actions.moveToElement(category).click().perform();
 
+	    
+	    Common.waitForElement(5);
 	    // Pick random product
 	    List<WebElement> products = wait.until(
 	            ExpectedConditions.visibilityOfAllElementsLocatedBy(
@@ -880,6 +1268,8 @@ Thread.sleep(1500);
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    
 	    click(zlaataIndiaShopButton);
+	    Common.waitForElement(10);
+
 	    
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -963,6 +1353,9 @@ driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl()
 
 	    
 	    click(zlaataIndiaShopButton);
+	    
+	    Common.waitForElement(10);
+
 	    RandomProduct();
 	    Common.waitForElement(1);
 	    Actions actions = new Actions(driver);
@@ -1242,6 +1635,9 @@ driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl()
 
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    click(zlaataIndiaShopButton);
+	    
+	    Common.waitForElement(10);
+
 
 	    RandomProduct();
 
@@ -1450,6 +1846,9 @@ driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl()
 
 	    
 	    click(zlaataIndiaShopButton);
+	    
+	    Common.waitForElement(10);
+
 
 		RandomProduct();
 		if (detailsPageCategoryName.isDisplayed()) {
@@ -2171,6 +2570,9 @@ driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl()
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    
 	    click(zlaataIndiaShopButton);
+	    
+	    Common.waitForElement(10);
+
 
 	    try {
 	        

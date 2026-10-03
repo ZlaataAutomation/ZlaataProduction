@@ -14,7 +14,7 @@ public abstract  class ProductListObjRepo extends BasePage {
 //	protected WebElement shopMenu;
 	
 	
-	@FindBy(xpath = "//div[@class='header_nav_item has_dropdown']")
+	@FindBy(xpath = "//div[@class='header_nav_item has_dropdown shop']")
 	protected WebElement shopMenu;
 	
 //	@FindBy(xpath = "//div[@class='nav_drop_down_box_category active']//ul/li/a[translate(normalize-space(), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') = 'ALL']")
@@ -26,7 +26,7 @@ public abstract  class ProductListObjRepo extends BasePage {
 	@FindBy(xpath = "//a[normalize-space()='dresses']")
 	protected WebElement categoryDresses;
 	
-	@FindBy(xpath = "//a[contains(@class,'bread_crumb_link')]")
+	@FindBy(xpath = "//a[@class='bread_crumb_link']")
 	protected WebElement homeCrumbLink;
 	
 //	@FindBy(xpath = "//div[contains(@class,'home_banner_container')]")
@@ -114,12 +114,17 @@ public abstract  class ProductListObjRepo extends BasePage {
 	
 	
 	
+	@FindBy(xpath = "//a[normalize-space()='BOSS LADY']")
+	protected WebElement brandswitch;
 	
 	
 	
 	
-	
-	
+	@FindBy(xpath = "//button[contains(@class,'product_wishlist_icon') and contains(@class,'is-liked')]")
+	protected List<WebElement> removeProductFromWishListPage;
+
+	@FindBy(xpath = "//button[@class='header_cta_btn wishlist-icon ']")
+	protected WebElement wishListButton;
 	
 	
 	

@@ -108,7 +108,7 @@ public class HomePageStepdef {
 
 
 	@Given("User clicks on whats app icon")
-	public void user_clicks_on_whats_app_icon() {
+	public void user_clicks_on_whats_app_icon() throws TimeoutException {
 		home.whatsApp();
 	}
 

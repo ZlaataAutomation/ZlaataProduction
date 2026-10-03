@@ -72,6 +72,10 @@ public abstract class BeforeLoginObjRepo  extends BasePage{
 	@FindBy(xpath = "//input[@placeholder='Enter threads']")
 	protected WebElement threadTextBox;
 	
+
+	@FindBy(xpath = "//h2[@class='landing_page_title' and text()='BOSS LADY']")
+	protected WebElement clickOnBossladyShopNowButton;
+
 	
 
 
