@@ -31,7 +31,7 @@ public class PageObjectManager {
     private AllBrokenLinkPage link;
     private landingPage land;
 	private BeforeLoginPage beforlogin;
-
+	private GiftCardPage giftCard;
    
 
     public PageObjectManager(WebDriver driver) {
@@ -124,5 +124,9 @@ public class PageObjectManager {
 	public BeforeLoginPage getBeforeLogin() {
 			return (beforlogin == null)? beforlogin = new BeforeLoginPage(driver): beforlogin;
 		}
+	
+	public GiftCardPage getGiftCardPage() {
+		return (giftCard == null)? giftCard = new GiftCardPage(driver): giftCard;
+	}
 	
 }

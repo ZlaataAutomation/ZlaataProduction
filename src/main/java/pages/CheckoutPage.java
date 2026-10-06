@@ -566,6 +566,8 @@ public final class CheckoutPage extends CheckOutPageObjRepo{
 	            .getConfigReader().getApplicationUrl());
 
 	    click(zlaataIndiaShopButton);
+	    
+	    Common.waitForElement(10);
 
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
@@ -820,7 +822,7 @@ public final class CheckoutPage extends CheckOutPageObjRepo{
 		    try {
 		        WebElement emptyMsg = wait.until(
 		                ExpectedConditions.visibilityOfElementLocated(
-		                        By.xpath("//h2[@class='empty-cart-title' and normalize-space()='Your bag is empty']")
+		                        By.xpath("//a[@class='empty_bag_shop_btn btn___2']")
 		                )
 		        );
 

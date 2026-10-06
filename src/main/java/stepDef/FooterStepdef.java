@@ -140,10 +140,10 @@ public class FooterStepdef  {
 	}
 
 
-		@Given("User verifies that the Gift Card link in the footer redirects to the correct page")
-	public void user_verifies_that_the_gift_card_link_in_the_footer_redirects_to_the_correct_page() {
-		footer.giftcardBanner();
-	}
+//		@Given("User verifies that the Gift Card link in the footer redirects to the correct page")
+//	public void user_verifies_that_the_gift_card_link_in_the_footer_redirects_to_the_correct_page() {
+//		footer.giftcardBanner();
+//	}
 
 
 

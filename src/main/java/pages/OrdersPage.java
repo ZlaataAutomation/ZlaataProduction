@@ -382,6 +382,9 @@ public final class OrdersPage extends SaleOffer50PercentageObjRepo{
 		    System.out.println(LINE);
 		    System.out.println(CYAN + "🛒 Starting Apply Coupon Process..." + RESET);
 		    System.out.println(LINE);
+		    
+//		    
+		    Common.waitForElement(10);
 
 		    By couponInput = By.xpath("(//input[@placeholder='Enter Coupon Code'])[1]");
 
@@ -1388,7 +1391,7 @@ public String takeRandomProductFromAll() {
 
     // Hover on Shop → All
     WebElement shopMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//div[@class='header_nav_item has_dropdown']")));
+            By.xpath(" //div[@class='header_nav_item has_dropdown shop']")));
     actions.moveToElement(shopMenu).perform();
 
     WebElement allButton = wait.until(ExpectedConditions.elementToBeClickable(
@@ -1535,10 +1538,11 @@ public void deleteAllProductsFromCart() {
     // Open cart
     driver.findElement(By.xpath("//button[@class='header_cta_btn Cls_cart_btn ']")).click();
     Common.waitForElement(1);
+    Common.waitForElement(10);
 
     // ✅ STEP 1: Check if cart is already empty
     try {
-        if (driver.findElement(By.xpath("//*[contains(text(),'Your bag is empty')]")).isDisplayed()) {
+        if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
             System.out.println("🛍️ Cart already empty. No delete action needed.");
             return; // Stop method immediately
         }
@@ -1565,7 +1569,7 @@ public void deleteAllProductsFromCart() {
 
     // ✅ STEP 3: Final confirmation
     try {
-        if (driver.findElement(By.xpath("//*[contains(text(),'Your bag is empty')]")).isDisplayed()) {
+        if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
             System.out.println("🛍️ Cart is empty, Continue Shopping displayed.");
         }
     } catch (NoSuchElementException e) {

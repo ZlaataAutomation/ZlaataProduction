@@ -260,20 +260,24 @@ public void saleMenu() {
 	    String CYAN   = "\u001B[36m";
 	    String YELLOW = "\u001B[33m";
 	    String PURPLE = "\u001B[35m";
-
-	    String expectedUrlPart = "/new-arrivals";
+	    String[] expectedUrlParts = {"/new-arrivals", "/new-launch"};
 
 	    System.out.println(CYAN + "🔍 Verifying New Arrival menu..." + RESET);
 
 	    WebElement newArrivalMenu = wait.until(ExpectedConditions.elementToBeClickable(
-	            By.xpath("//a[contains(@class,'header_nav_link') and contains(@href,'new-arrivals')]")
+	            By.xpath("//div[@class='header_nav_item new_in']")
 	    ));
 
 	    System.out.println(GREEN + "✅ New Arrival menu clickable" + RESET);
 
 	    newArrivalMenu.click();
 
-	    wait.until(ExpectedConditions.urlContains(expectedUrlPart));
+	    wait.until(driver -> 
+	            driver.getCurrentUrl().contains(expectedUrlParts[0]) ||
+	            driver.getCurrentUrl().contains(expectedUrlParts[1])
+	    );
+
+	    System.out.println(GREEN + "✅ New Arrival URL verified: " + driver.getCurrentUrl() + RESET);
 
 	    String actualUrl = driver.getCurrentUrl();
 	    System.out.println(CYAN + "URL: " + actualUrl + RESET);
@@ -700,7 +704,7 @@ public void saleMenu() {
 	    System.out.println(CYAN + line + RESET);
 
 	    // ✅ ALWAYS re-locate element (fix stale)
-	    By shopMenuBy = By.xpath("//div[@class='header_nav_item has_dropdown']");
+	    By shopMenuBy = By.xpath("//div[@class='header_nav_item has_dropdown shop']");
 	    By categoriesBy = By.xpath("//h5[normalize-space()='CATEGORIES']");
 	    By collectionBy = By.xpath("//h5[normalize-space()='COLLECTIONS']");
 
@@ -1471,6 +1475,8 @@ public void saleMenu() {
 	        System.out.println(YELLOW + "👉 Clicking Category [" + (i + 1) + "] : " + categoryName + RESET);
 
 	        category.click();
+	        
+	        Common.waitForElement(10);
 
 	        Thread.sleep(2000);
 
@@ -1938,6 +1944,8 @@ public void saleMenu() {
 		driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 		
 		click(zlaataIndiaShopButton);
+		
+		Common.waitForElement(10);
 		
 		//verifyHomeMenu();
 		

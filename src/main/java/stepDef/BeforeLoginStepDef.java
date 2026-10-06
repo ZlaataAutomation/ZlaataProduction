@@ -231,6 +231,12 @@ public class BeforeLoginStepDef {
 
 
 
+	@Given("user navigates to the product details page")
+public void user_navigates_to_the_product_details_page() {
+	
+		beforelogin.verifyOutOfStockProductAvailable();
+}
+
 
 
 }
