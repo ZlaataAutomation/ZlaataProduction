@@ -127,6 +127,7 @@ public final class landingPage  extends landingPageObjRepo{
 	    System.out.println(BLUE + "Clicking Zlaata India Shop button" + RESET);
 	    click(zlaataIndiaShopButton);
 
+	    Common.waitForElement(10);
 	    wait.until(ExpectedConditions.urlContains("zlaata-india"));
 
 	    String actualUrl = driver.getCurrentUrl();

@@ -257,7 +257,7 @@ public final class OrdersPage extends SaleOffer50PercentageObjRepo{
 		    }
 		}
 		
-		public void validateAddressAndPaymentPagePriceWithCart() {
+		public void validateAddressAndPaymentPagePriceWithCartOne() {
 
 		    String GREEN  = "\u001B[32m";
 		    String RED    = "\u001B[31m";
@@ -271,6 +271,29 @@ public final class OrdersPage extends SaleOffer50PercentageObjRepo{
 		    click(continueBtn);
 		    System.out.println(GREEN + "✅ Clicked Continue Button" + RESET);
 		    Common.waitForElement(2);
+		    
+		    
+		    		
+		    wait.until(ExpectedConditions.elementToBeClickable(selectCOD));
+		    click(selectCOD);
+		    System.out.println(GREEN + "✅ Selected COD" + RESET);
+		    
+		    Common.waitForElement(3);
+
+			  WebElement codExtraElement = wait.until(
+	  		            ExpectedConditions.visibilityOfElementLocated(
+	  		                    By.xpath("(//span[contains(@class,'checkout__price_cart_courier_fee ')])[2]")
+	  		            ));
+
+	  		    int codExtraChargeone = Integer.parseInt(
+	  		    		codExtraElement.getText().replaceAll("[^0-9]", "").trim()
+	  		    );
+	  		    
+	 
+		    
+		    int totalCodCharges = cartPageCalcTotalAmount+codExtraChargeone;
+
+		    
 		    // ✅ Fetch "You Saved" from Address Page UI
 		    WebElement addressYouSavedElement = wait.until(
 		            ExpectedConditions.visibilityOfElementLocated(
@@ -297,6 +320,8 @@ public final class OrdersPage extends SaleOffer50PercentageObjRepo{
 		    System.out.println(CYAN + "📌 Cart vs Address Page — You Saved:" + RESET);
 		    System.out.println(YELLOW + "Cart Page Saved: " + cartPageCalcYouSaved + RESET);
 		    System.out.println(YELLOW + "Address Page UI Saved: " + addressUiSavedAmount + RESET);
+		    
+		  
 
 		    if (cartPageCalcYouSaved == addressUiSavedAmount) {
 		        System.out.println(GREEN + "✅ You Saved MATCHES on Address Page" + RESET);
@@ -307,6 +332,108 @@ public final class OrdersPage extends SaleOffer50PercentageObjRepo{
 		        Assert.fail("❌ You Saved MISMATCH — Cart: " + cartPageCalcYouSaved +
 		                " | Address: " + addressUiSavedAmount);
 		    }
+		    
+
+
+		    // ==============================
+		    // ✅ VALIDATE "TOTAL AMOUNT"
+		    // ==============================
+		    System.out.println(CYAN + "📌 Cart vs Address Page — Total Amount:" + RESET);
+		    System.out.println(YELLOW + "Cart Page Total: " + totalCodCharges + RESET);
+		    System.out.println(YELLOW + "Address Page  UI Total: " + addressUiTotalAmount + RESET);
+
+		    if (totalCodCharges == addressUiTotalAmount) {
+		        System.out.println(GREEN + "✅ Total Amount MATCHES on Address Page" + RESET);
+		    } else {
+		        System.out.println(RED + "❌ Total Amount MISMATCH — Cart: " + totalCodCharges +
+		                " | Address: " + addressUiTotalAmount + RESET);
+
+		        Assert.fail("❌ Total Amount MISMATCH — Cart: " + totalCodCharges +
+		                " | Address: " + addressUiTotalAmount);
+		    }
+		}
+		
+		
+		
+		public void validateAddressAndPaymentPagePriceWithCart() {
+
+		    String GREEN  = "\u001B[32m";
+		    String RED    = "\u001B[31m";
+		    String YELLOW = "\u001B[33m";
+		    String CYAN   = "\u001B[36m";
+		    String RESET  = "\u001B[0m";
+
+		    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		    Common.waitForElement(2);
+		    wait.until(ExpectedConditions.elementToBeClickable(continueBtn));
+		    click(continueBtn);
+		    System.out.println(GREEN + "✅ Clicked Continue Button" + RESET);
+		    Common.waitForElement(2);
+		   
+		    
+		    // ✅ Fetch "You Saved" from Address Page UI
+		    WebElement addressYouSavedElement = wait.until(
+		            ExpectedConditions.visibilityOfElementLocated(
+		                    By.xpath("(//div[contains(@class,'Cls_cart_saved_amount')])[2]")
+		            ));
+
+		    int addressUiSavedAmount = Integer.parseInt(
+		            addressYouSavedElement.getText().replaceAll("[^0-9]", "").trim()
+		    );
+
+		    // ✅ Fetch "Total Amount" from Address Page UI
+		    WebElement addressTotalAmountElement = wait.until(
+		            ExpectedConditions.visibilityOfElementLocated(
+		                    By.xpath("(//div[contains(@class,'Cls_cart_total_amount')])[2]")
+		            ));
+
+		    int addressUiTotalAmount = Integer.parseInt(
+		            addressTotalAmountElement.getText().replaceAll("[^0-9]", "").trim()
+		    );
+
+		    // ==============================
+		    // ✅ VALIDATE "YOU SAVED"
+		    // ==============================
+		    System.out.println(CYAN + "📌 Cart vs Address Page — You Saved:" + RESET);
+		    System.out.println(YELLOW + "Cart Page Saved: " + cartPageCalcYouSaved + RESET);
+		    System.out.println(YELLOW + "Address Page UI Saved: " + addressUiSavedAmount + RESET);
+		    
+		  
+
+		    if (cartPageCalcYouSaved == addressUiSavedAmount) {
+		        System.out.println(GREEN + "✅ You Saved MATCHES on Address Page" + RESET);
+		    } else {
+		        System.out.println(RED + "❌ You Saved MISMATCH — Cart: " + cartPageCalcYouSaved +
+		                " | Address: " + addressUiSavedAmount + RESET);
+
+		        Assert.fail("❌ You Saved MISMATCH — Cart: " + cartPageCalcYouSaved +
+		                " | Address: " + addressUiSavedAmount);
+		    }
+		    
+//		    
+//		 // ==============================
+//		 // ✅ VALIDATE "YOU SAVED"
+//		 // ==============================
+//
+//		 int expectedAddressSavedAmount = cartPageCalcYouSaved + 50;
+//
+//		 System.out.println(CYAN + "📌 Cart vs Address Page — You Saved:" + RESET);
+//		 System.out.println(YELLOW + "Cart Page Saved: " + cartPageCalcYouSaved + RESET);
+//		 System.out.println(YELLOW + "Expected Address Saved (+₹50): " + expectedAddressSavedAmount + RESET);
+//		 System.out.println(YELLOW + "Address Page UI Saved: " + addressUiSavedAmount + RESET);
+//
+//		 if (expectedAddressSavedAmount == addressUiSavedAmount) {
+//
+//		     System.out.println(GREEN + "✅ You Saved MATCHES on Address Page" + RESET);
+//
+//		 } else {
+//
+//		     System.out.println(RED + "❌ You Saved MISMATCH — Expected: " + expectedAddressSavedAmount +
+//		             " | Address: " + addressUiSavedAmount + RESET);
+//
+//		     Assert.fail("❌ You Saved MISMATCH — Expected: " + expectedAddressSavedAmount +
+//		             " | Address: " + addressUiSavedAmount);
+//		 }
 
 		    // ==============================
 		    // ✅ VALIDATE "TOTAL AMOUNT"
@@ -1669,7 +1796,7 @@ public void verifyOrderCancellation() {
 		 
 		 validateAddressAndPaymentPagePriceWithCart();
 		 
-		 validateAddressAndPaymentPagePriceWithCart();
+		 validateAddressAndPaymentPagePriceWithCartOne();
 		 
 		 placeOrderWithCOD();
 		 
