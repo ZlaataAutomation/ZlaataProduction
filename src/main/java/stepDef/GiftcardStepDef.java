@@ -20,18 +20,24 @@ public class GiftcardStepDef {
 
 
 
-		@Given("user is able to add the Gift Card to the cart")
+	@Given("user is able to add the Gift Card to the cart")
 	public void user_is_able_to_add_the_gift_card_to_the_cart() {
-			
-			
-			giftCard.giftcardorder();
-			giftCard.verifyGiftCardImageNavigation();
-			giftCard.verifyGiftCardLearnMore();
-			giftCard.verifyCheckBalanceValidation();
+
+
+
+		giftCard.giftcardorder();
+		giftCard.verifyGiftCardImageNavigation();
+		giftCard.verifyGiftCardLearnMore();
+		giftCard.giftcardorder();
+		giftCard.verifyGiftCardImageNavigation();
+		giftCard.verifyGiftCardLearnMore();
+		giftCard.verifyCheckBalanceValidation();
 	}
 
-
-
-
-
 }
+
+
+
+
+
+

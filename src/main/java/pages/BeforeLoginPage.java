@@ -37,42 +37,46 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 
 	}
 
-
 	public void verifyLogOut() {
 
+	    try {
 
-		try {
+	        driver.get(FileReaderManager.getInstance()
+	                .getConfigReader().getApplicationUrl());
 
-			driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+	        Common.waitForElement(2);
 
-			profile.click();
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+	        
+	        profile.click();
+	        
+	        Common.waitForElement(2);
 
-			// 🔹 Case 1: Logout visible
-			WebElement logoutBtn = wait.until(ExpectedConditions
-					.visibilityOfElementLocated(
-							By.xpath("//a[contains(@class,'logout-btn')]")
-							));
-			// ✅ Scroll to Logout
-			((JavascriptExecutor) driver)
-			.executeScript("arguments[0].scrollIntoView(true);", logoutBtn);
+	        // Already logged out
+	        if (!driver.findElements(By.xpath("//div[@class='login_popup_wrap']")).isEmpty()) {
 
-			Common.waitForElement(1);
-			if (logoutBtn.isDisplayed()) {
-				System.out.println("✅ Logout option visible. Logging out...");
-				Common.waitForElement(2);
-				((JavascriptExecutor) driver)
-				.executeScript("arguments[0].click();", logoutBtn);
+	            System.out.println("ℹ️ Application is already logged out.");
+	            return;
+	        }
 
-				return;
-			}
+	        // User is logged in → Logout
+	        profile.click();
 
-		} catch (Exception e) {
-			driver.navigate().refresh();
-			System.out.println("ℹ Logout option not found. Skipping logout.");
-		}
+	        Common.waitForElement(2);
 
+	        WebElement logoutBtn = driver.findElement(
+	                By.xpath("//*[contains(@class,'logout-btn')]")
+	        );
 
+	        ((JavascriptExecutor) driver).executeScript(
+	                "arguments[0].click();", logoutBtn
+	        );
+
+	        System.out.println("✅ Logout clicked");
+
+	    } catch (Exception e) {
+
+	        System.out.println("❌ Logout failed: " + e.getMessage());
+	    }
 	}
 
 	// TC-01
