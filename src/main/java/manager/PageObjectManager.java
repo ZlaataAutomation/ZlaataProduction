@@ -32,6 +32,8 @@ public class PageObjectManager {
     private landingPage land;
 	private BeforeLoginPage beforlogin;
 	private GiftCardPage giftCard;
+	private GuestLoginPage guest;
+	private FooterLogoPage logo;
    
 
     public PageObjectManager(WebDriver driver) {
@@ -127,6 +129,14 @@ public class PageObjectManager {
 	
 	public GiftCardPage getGiftCardPage() {
 		return (giftCard == null)? giftCard = new GiftCardPage(driver): giftCard;
+	}
+	
+	public GuestLoginPage getGuestLoginPage() {
+		return ( guest== null) ? guest = new GuestLoginPage(driver) : guest;
+		
+	}
+	public FooterLogoPage getFooterLogoPage() {
+		return (logo == null) ? logo = new FooterLogoPage(driver) : logo;
 	}
 	
 }

@@ -822,7 +822,7 @@ public final class CheckoutPage extends CheckOutPageObjRepo{
 		    try {
 		        WebElement emptyMsg = wait.until(
 		                ExpectedConditions.visibilityOfElementLocated(
-		                        By.xpath("//a[@class='empty_bag_shop_btn btn___2']")
+		                        By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")
 		                )
 		        );
 

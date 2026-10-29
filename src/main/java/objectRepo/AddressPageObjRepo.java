@@ -12,7 +12,7 @@ public abstract class AddressPageObjRepo extends BasePage {
 	@FindBy(xpath = "//div[@class='navigation_cta_icon_list account_icon_btn open__popup']")
 	protected WebElement wishlistButton;
 	
-	@FindBy(xpath = "//a[.='Saved Address']")
+	@FindBy(xpath = "//h2[@class='account_tabs_text' and normalize-space()='Saved Address']")
 	protected WebElement addressSideMenuButton;
 	
 	
@@ -188,7 +188,7 @@ public abstract class AddressPageObjRepo extends BasePage {
 //   @FindBy(xpath = "//div[@class='navigation_cta_icon_list account_icon_btn open__popup']")
 //	protected WebElement profile;
    
-   @FindBy(xpath = "//div[@class='navigation_cta_icon_list account_icon_btn open__popup ']")
+   @FindBy(xpath = "//button[contains(@class,'account_icon_btn')]")
 	protected WebElement profile;
    
 	
@@ -210,15 +210,23 @@ public abstract class AddressPageObjRepo extends BasePage {
 	protected WebElement addToCart;
    
 
-   @FindBy(xpath = "	//a[@class='Cls_cart_btn Cls_redirect_restrict']")
+   @FindBy(xpath = "//button[@title='Cart']")
    protected WebElement bagIcon;
    
    @FindBy(xpath ="//a[@class='empty_cart_continue_btn btn___2']")
 	protected WebElement continueButton;
    
-   @FindBy(xpath = "//button[@class='place_order_btn Cls_place_order btn___2 ']")
+   @FindBy(xpath = "//button[contains(@class,'place_order_btn') and normalize-space(text())='Place order']")
    protected WebElement checkoutpageContinueButton;
 	
 	@FindBy(xpath = "//div[@class='address_card Cls_addr_data_section']")
 	protected WebElement totalAddressCount;
+	
+	@FindBy(id="mobileNumber")
+	protected WebElement phoneNumber;
+	
+	@FindBy(xpath = "//div[@class='account_tabs_container active']//a[@class='account_sidebar_user_profile_link_acc_settings'][normalize-space()='My Profile']")
+	protected WebElement myProfile;
+	
+	
 }

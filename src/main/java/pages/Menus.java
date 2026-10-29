@@ -504,7 +504,7 @@ public void saleMenu() {
 	    System.out.println(CYAN + "🔍 Verifying Sale menu..." + RESET);
 
 	    WebElement saleMenu = wait.until(ExpectedConditions.elementToBeClickable(
-	            By.xpath("//a[normalize-space()='SALE']")
+	            By.xpath("//div[@class='header_nav_item sale']")
 	    ));
 
 	    saleMenu.click();

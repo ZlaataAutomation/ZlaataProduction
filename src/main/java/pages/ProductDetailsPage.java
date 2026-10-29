@@ -97,7 +97,7 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 	    click(zlaataIndiaShopButton);
 	    
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	    Actions actions = new Actions(driver);
@@ -261,7 +261,7 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 	    
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	    Actions actions = new Actions(driver);
@@ -639,7 +639,7 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 	    // Navigate to Wishlist
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    click(wishListButton);
 	    Common.waitForElement(2);
@@ -993,7 +993,7 @@ public final class ProductDetailsPage extends ProductDetailsPageObjRepo {
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	    Actions actions = new Actions(driver);
@@ -1186,7 +1186,7 @@ Thread.sleep(2000);
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    click(zlaataIndiaShopButton);
 
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -1268,7 +1268,7 @@ Thread.sleep(1500);
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    
 	    click(zlaataIndiaShopButton);
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1354,7 +1354,7 @@ driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl()
 	    
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    RandomProduct();
 	    Common.waitForElement(1);
@@ -1636,7 +1636,7 @@ driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl()
 	    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 
 	    RandomProduct();
@@ -1847,7 +1847,7 @@ driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl()
 	    
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 
 		RandomProduct();
@@ -2571,7 +2571,8 @@ driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl()
 	    
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
+	    
 
 
 	    try {

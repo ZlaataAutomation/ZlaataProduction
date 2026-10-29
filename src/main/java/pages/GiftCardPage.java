@@ -40,7 +40,7 @@ public final class GiftCardPage  extends GiftCardObjRepo{
 	    // STEP 1: Check if cart is already empty
 	    try {
 	        if (driver.findElement(
-	                By.xpath("//a[@class='empty_bag_shop_btn btn___2']")
+	                By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")
 	        ).isDisplayed()) {
 
 	            System.out.println("🛍️ Cart already empty. No delete action needed.");
@@ -127,7 +127,7 @@ public final class GiftCardPage  extends GiftCardObjRepo{
 	    try {
 
 	        if (driver.findElement(
-	                By.xpath("//a[@class='empty_bag_shop_btn btn___2']")
+	                By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")
 	        ).isDisplayed()) {
 
 	            System.out.println(

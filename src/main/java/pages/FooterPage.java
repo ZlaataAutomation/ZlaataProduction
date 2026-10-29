@@ -532,7 +532,7 @@ public  final class FooterPage  extends FooterObjRepo{
 
 		click(zlaataIndiaShopButton);
 		
-		Common.waitForElement(10);
+//		Common.waitForElement(10);
 
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
