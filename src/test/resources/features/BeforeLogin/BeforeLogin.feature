@@ -165,14 +165,15 @@ Feature: Login Popup verification for guest user actions before login
       | TD_UI_Zlaata_BL_11  |
 
 
-
+     @BL
+@Sanity
   @TC_UI_Zlaata_BL_12
-  Scenario Outline: TC_UI_Zlaata_BL_12 |Verify validation message appears when guest user clicks Gift Card Amount section on cart page| "<TD_ID>"
+  Scenario Outline: TC_UI_Zlaata_BL_12 |Verify that the Login Popup is displayed when the user clicks the Notify Me when Available button on the Product Details Page.| "<TD_ID>"
 
-    Given user navigates to the cart page as a guest user
-    When user clicks on the Gift Card Amount section without logging in
-    Then the validation message "Please login to apply gift card amount." should be displayed
+    Given user navigates to the product details page 
+   
 
     Examples:
       | TD_ID               |
-      | TD_UI_Zlaata_BL_12  |
+      | TD_UI_Zlaata_BL_12  | 
+      

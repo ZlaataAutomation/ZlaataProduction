@@ -53,7 +53,7 @@ public final class ProductListingPage extends ProductListObjRepo {
 	    
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
@@ -140,7 +140,7 @@ public final class ProductListingPage extends ProductListObjRepo {
     
     click(zlaataIndiaShopButton);
     
-    Common.waitForElement(10);
+//    Common.waitForElement(10);
     
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
@@ -179,7 +179,7 @@ Thread.sleep(2000);
     
     click(zlaataIndiaShopButton);
     
-    Common.waitForElement(10);
+//    Common.waitForElement(10);
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 	    System.out.println(CYAN + "🔍 Navigating to Product Listing Page..." + RESET);
@@ -289,7 +289,7 @@ Thread.sleep(2000);
 	    
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1279,7 +1279,7 @@ Thread.sleep(2000);
 	    
 	    click(zlaataIndiaShopButton);
 	    
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 	    
 	    click(wishListButton);
 
@@ -2006,11 +2006,11 @@ Thread.sleep(2000);
 	    );
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cartBtn);
 	    cartBtn.click();
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    // Check if cart is already empty
 	    try {
-	        if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
+	        if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
 	            System.out.println("🛍️ Cart already empty. No delete action needed.");
 	            return;
 	        }
@@ -2046,7 +2046,7 @@ Thread.sleep(2000);
 
 	    // Final confirmation
 	    try {
-	        if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
+	        if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
 	            System.out.println("🛍️ Cart is empty, Continue Shopping displayed.");
 	        }
 	    } catch (NoSuchElementException e) {

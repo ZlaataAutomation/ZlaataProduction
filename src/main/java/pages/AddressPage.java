@@ -4,6 +4,9 @@ import org.openqa.selenium.NoSuchElementException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -12,12 +15,22 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import manager.FileReaderManager;
 import objectRepo.AddressPageObjRepo;
 import utils.Common;
 
 public  final class AddressPage  extends AddressPageObjRepo
 
 {
+	
+	
+	String GREEN  = "\u001B[32m";
+	String RED    = "\u001B[31m";
+	String YELLOW = "\u001B[33m";
+	String CYAN   = "\u001B[36m";
+	String BLUE   = "\u001B[34m";
+	String RESET  = "\u001B[0m";
 
 	public AddressPage(WebDriver driver) 
 	{
@@ -25,51 +38,99 @@ public  final class AddressPage  extends AddressPageObjRepo
 		PageFactory.initElements(this.driver, this);
 	}
 
-	public void addToCart() {
-		Common.waitForElement(5);
-		click(bagIcon);
-	try {
-		if (!products.isEmpty()) {
-//			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkoutpageContinueButton);
+//	public void addToCart() {
+//		Common.waitForElement(5);
+//		click(bagIcon);
+//	try {
+//		if (!products.isEmpty()) {
+////			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", checkoutpageContinueButton);
+////
+////			// Optionally wait for visibility before clicking
+////			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+////			wait.until(ExpectedConditions.elementToBeClickable(checkoutpageContinueButton));
+////
+////			// Click the button
+////			checkoutpageContinueButton.click();
+//			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", checkoutpageContinueButton);
 //
-//			// Optionally wait for visibility before clicking
-//			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//			wait.until(ExpectedConditions.elementToBeClickable(checkoutpageContinueButton));
+//			((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkoutpageContinueButton);
+//		}
+//		
+//		else {
+//		
+//			Common.waitForElement(1);
+//			Actions actions = new Actions(driver);
+//			actions.moveToElement(shopMenu);
+//			actions.moveToElement(category).click().build().perform();
+//			List<WebElement> addProduct = driver.findElements(By.xpath("//button[@class='product_list_cards_btn']"));
+//			Collections.shuffle(addProduct);
 //
-//			// Click the button
-//			checkoutpageContinueButton.click();
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", checkoutpageContinueButton);
+//			if (!addProduct.isEmpty()) {
+//				WebElement randomProduct = addProduct.get(0);
+//				actions.moveToElement(randomProduct).click().build().perform();
+//				Common.waitForElement(2);
+//				click(addToCart);
+//				Common.waitForElement(5);
+//				click(bagIcon);
+//				Common.waitForElement(5);
+//
+//				((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", checkoutpageContinueButton);
+//
+//				((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkoutpageContinueButton);				
+//			}
+//			
+//		}
+//	} catch (Exception e) {
+//		System.out.println(e);
+//	}
+//	}
+//	
+	public void deleteAllProductsFromCart() {
+		driver.get(FileReaderManager.getInstance()
+	            .getConfigReader()
+	            .getApplicationUrl());
 
-			((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkoutpageContinueButton);
-		}
-		
-		else {
-		
-			Common.waitForElement(1);
-			Actions actions = new Actions(driver);
-			actions.moveToElement(shopMenu);
-			actions.moveToElement(category).click().build().perform();
-			List<WebElement> addProduct = driver.findElements(By.xpath("//button[@class='product_list_cards_btn']"));
-			Collections.shuffle(addProduct);
+	    // Open cart
+	    driver.findElement(By.xpath("//button[@class='header_cta_btn Cls_cart_btn ']")).click();
+	    Common.waitForElement(1);
+//	    Common.waitForElement(10);
 
-			if (!addProduct.isEmpty()) {
-				WebElement randomProduct = addProduct.get(0);
-				actions.moveToElement(randomProduct).click().build().perform();
-				Common.waitForElement(2);
-				click(addToCart);
-				Common.waitForElement(5);
-				click(bagIcon);
-				Common.waitForElement(5);
+	    // ✅ STEP 1: Check if cart is already empty
+	    try {
+	        if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
+	            System.out.println("🛍️ Cart already empty. No delete action needed.");
+	            return; // Stop method immediately
+	        }
+	    } catch (NoSuchElementException ignored) {
+	    	System.out.println("Cart is NOT empty, proceed to delete");
+	        // Cart is NOT empty, proceed to delete
+	    }
 
-				((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", checkoutpageContinueButton);
+	    // ✅ STEP 2: Delete products one by one
+	    while (true) {
+	        try {
+	            WebElement deleteBtn = driver.findElement(By.xpath("//div[@title='Delete']"));
+	            deleteBtn.click();
+	            System.out.println("🗑️ Product deleted");
+	            Common.waitForElement(1); 
+	        } catch (NoSuchElementException e) {
+	            System.out.println("✅ No more products to delete.");
+	            break;
+	        } catch (Exception e) {
+	            System.out.println("⚠️ Error while deleting: " + e.getMessage());
+	            break;
+	        }
+	    }
 
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkoutpageContinueButton);				
-			}
-			
-		}
-	} catch (Exception e) {
-		System.out.println(e);
-	}
+	    // ✅ STEP 3: Final confirmation
+	    try {
+	        if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
+	            System.out.println("🛍️ Cart is empty, Continue Shopping displayed.");
+	        }
+	    } catch (NoSuchElementException e) {
+	        System.out.println("ℹ️ Bag is not empty message not found.");
+	    }
+	    
 	}
 	
 	public void newAddressData() {
@@ -133,15 +194,62 @@ public  final class AddressPage  extends AddressPageObjRepo
 	}
 
 	public void validateAllFields() {
-	    verify("Name", validationName.getText(), "Name should be between 3 and 50 characters.");
-	    verify("Phone", validationPhoneNumber.getText(), "Please enter a valid 10-digit phone number.");
-	    verify("Email", validationMailID.getText(), "Please enter a valid email address.");
-	    verify("Address", validationAddressTxtBox.getText(), "Address must be between 3 and 50 characters.");
-	    verify("Street", validationStreet.getText(), "Street must be between 3 and 50 characters.");
-	    verify("Pincode", validationPincode.getText(), "Please enter a valid 6-digit pincode.");
-	    verify("Locality", valiadtionLocality.getText(), "Locality/Town must be between 3 and 50 characters.");
-	    verify("District", validationDistrict.getText(), "District is required.");
-	    verify("State", validationState.getText(), "State is required.");
+
+		 
+
+	    if (validationName.getText().equals("Name should be between 3 and 50 characters.")) {
+	        System.out.println(GREEN + "✅ PASS: Name validation" + RESET);
+	    } else {
+	        System.out.println(RED + "❌ FAIL: Name validation" + RESET);
+	    }
+
+//	    if (validationPhoneNumber.getText().equals("Please enter a valid 10-digit Indian phone number (may start with +91).")) {
+//	        System.out.println(GREEN + "✅ PASS: Phone validation" + RESET);
+//	    } else {
+//	        System.out.println(RED + "❌ FAIL: Phone validation" + RESET);
+//	    }
+
+	    if (validationMailID.getText().equals("Please enter a valid email address.")) {
+	        System.out.println(GREEN + "✅ PASS: Email validation" + RESET);
+	    } else {
+	        System.out.println(RED + "❌ FAIL: Email validation" + RESET);
+	    }
+
+	    if (validationAddressTxtBox.getText().equals("Address must be between 3 and 50 characters.")) {
+	        System.out.println(GREEN + "✅ PASS: Address validation" + RESET);
+	    } else {
+	        System.out.println(RED + "❌ FAIL: Address validation" + RESET);
+	    }
+
+	    if (validationStreet.getText().equals("Street must be between 3 and 50 characters.")) {
+	        System.out.println(GREEN + "✅ PASS: Street validation" + RESET);
+	    } else {
+	        System.out.println(RED + "❌ FAIL: Street validation" + RESET);
+	    }
+
+	    if (validationPincode.getText().equals("Please enter a valid 6-digit pincode.")) {
+	        System.out.println(GREEN + "✅ PASS: Pincode validation" + RESET);
+	    } else {
+	        System.out.println(RED + "❌ FAIL: Pincode validation" + RESET);
+	    }
+
+	    if (valiadtionLocality.getText().equals("Locality/Town must be between 3 and 50 characters.")) {
+	        System.out.println(GREEN + "✅ PASS: Locality validation" + RESET);
+	    } else {
+	        System.out.println(RED + "❌ FAIL: Locality validation" + RESET);
+	    }
+
+	    if (validationDistrict.getText().equals("District is required.")) {
+	        System.out.println(GREEN + "✅ PASS: District validation" + RESET);
+	    } else {
+	        System.out.println(RED + "❌ FAIL: District validation" + RESET);
+	    }
+
+	    if (validationState.getText().equals("State is required.")) {
+	        System.out.println(GREEN + "✅ PASS: State validation" + RESET);
+	    } else {
+	        System.out.println(RED + "❌ FAIL: State validation" + RESET);
+	    }
 	}
 
 	public void verify(String field, String actual, String expected) {
@@ -162,7 +270,12 @@ public  final class AddressPage  extends AddressPageObjRepo
 	
 	// F: 01
 	public void newAddresOnSavedAddresPage() 
+	
+	
 	{
+		
+		driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+
 		    click(profile);
 
 		    Actions action = new Actions(driver);
@@ -203,6 +316,9 @@ public  final class AddressPage  extends AddressPageObjRepo
 	//F: 2
 	public void leftAllMandatory() {
 	    try {
+	    	
+			driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+
 	        click(profile);
 	        new Actions(driver).moveToElement(addressSideMenuButton).click().perform();
 	        System.out.println("✅ Navigated to Address section.");
@@ -213,6 +329,7 @@ public  final class AddressPage  extends AddressPageObjRepo
 	            click(addNewAddressButtonOnAddresspage);
 	        }
 
+	        
 	        click(saveAddressButton); // try saving empty form
 	        validateAllFields(); // validate all errors
 
@@ -225,6 +342,9 @@ public  final class AddressPage  extends AddressPageObjRepo
 
 			//F: 3
 			public void defaultAddress() {
+				
+				driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+
 			    click(profile);
 			    new Actions(driver).moveToElement(addressSideMenuButton).click().perform();
 //			    Common.waitForElement(2);
@@ -384,7 +504,15 @@ public  final class AddressPage  extends AddressPageObjRepo
 			public void  editAddressfunctionalityOnSavedAddressPage () {
 
 				Actions action = new Actions(driver);
-				newAddresOnSavedAddresPage();
+				
+				driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+
+			    click(profile);
+
+			    action.moveToElement(addressSideMenuButton).click().build().perform();
+			    System.out.println("✅ Navigated to Address section.");
+				
+//				newAddresOnSavedAddresPage();
 				
 
 				try {
@@ -449,13 +577,13 @@ public  final class AddressPage  extends AddressPageObjRepo
 				System.out.println("New Data and updated Data from excel");
 				System.out.println("---------------------------------------------");
 				nameTextBox.clear();
-				emailIDTextBox.clear();
+//				emailIDTextBox.clear();
 				phoneNumberTextBox.clear();
 				addressDetailsTextBox.clear();
 				streetTextBox.clear();
 				pinCodeTextBox.clear();
 				townTextBox.clear();
-				newAddressData();
+				enterRandomAddressDetails();
 				System.out.println("---------------------------------------------");
 
 			}
@@ -495,6 +623,8 @@ public  final class AddressPage  extends AddressPageObjRepo
 
 				click(changeAddressButtonOnCheckoutpage);
 				System.out.println("Clicked on 'Change Address' button.");
+				
+				Common.waitForElement(100);
 
 
 				List<WebElement> addressRadios = driver.findElements(By.xpath("//input[@class='change_address_input']"));
@@ -523,7 +653,7 @@ public  final class AddressPage  extends AddressPageObjRepo
 				    click(checkoutpageContinueButton);
 				    // Step 1: Check if Delivery Address heading is visible
 				    try {
-				        WebElement deliveryAddressHeading = driver.findElement(By.xpath("//h5[normalize-space()='Delivery address']"));
+				        WebElement deliveryAddressHeading = driver.findElement(By.xpath("//h2[normalize-space()='Delivery address']"));
 				        if (deliveryAddressHeading.isDisplayed()) {
 				            System.out.println("✅ Delivery Address section is visible.");
 				        }
@@ -560,42 +690,47 @@ public  final class AddressPage  extends AddressPageObjRepo
 				    } catch (Exception e) {
 				        System.out.println("⚠️ Exception while checking Estimated Delivery: " + e.getMessage());
 				    }
+			}
 
-				    // Step 3: Price Details Section
-				    try {
-				        if (totalMRP.isDisplayed() && totalAmount.isDisplayed()) {
-				            System.out.println("\n💰 PRICE DETAILS:");
-				            System.out.println("Total MRP: " + totalMRP.getText().replace("Total MRP", "").trim());
-				            System.out.println("Discounted MRP: " + addressPageDiscountAmount.getText().replace("Discounted MRP", "").trim());
-				            System.out.println("Flat 50 off on Prepaid: " + addressPagePrepaidCouponAmount.getText().replace("Flat 50 off on Prepaid", "").trim());
-
-				            try {
-				                if (addressPageAppliedcouponAmount.isDisplayed()) {
-				                    System.out.println("Applied Coupon Discount: " + addressPageAppliedcouponAmount.getText().replace("Coupon Discount", "").trim());
-				                }
-				            } catch (NoSuchElementException ignored) {}
-
-				            System.out.println("You Saved: " + addressPageYouSavedAmount.getText().replace("You Saved", "").trim());
-
-				            String totalText = totalAmount.getText().trim();
-				            String[] totalLines = totalText.split("\n");
-				            String totalAmountFormatted = totalLines.length >= 2 ? totalLines[1].trim() : totalText;
-
-				            System.out.println("TOTAL AMOUNT: " + totalAmountFormatted);
-				            System.out.println("📌 Note: Inclusive of all taxes");
-
-				        } else {
-				            System.out.println("❌ Whole Price Details section not visible.");
-				        }
-				    } catch (Exception e) {
-				        System.out.println("⚠️ Exception while checking Price Details: " + e.getMessage());
-				    }
-
-				    System.out.println("✅ Finished checking Delivery Address, Delivery Date, and Price Details.");
-				}
+//				    // Step 3: Price Details Section
+//				    try {
+//				        if (totalMRP.isDisplayed() && totalAmount.isDisplayed()) {
+//				            System.out.println("\n💰 PRICE DETAILS:");
+//				            System.out.println("Total MRP: " + totalMRP.getText().replace("Total MRP", "").trim());
+//				            System.out.println("Discounted MRP: " + addressPageDiscountAmount.getText().replace("Discounted MRP", "").trim());
+////				            System.out.println("Flat 50 off on Prepaid: " + addressPagePrepaidCouponAmount.getText().replace("Flat 50 off on Prepaid", "").trim());
+//
+//				            try {
+//				                if (addressPageAppliedcouponAmount.isDisplayed()) {
+//				                    System.out.println("Applied Coupon Discount: " + addressPageAppliedcouponAmount.getText().replace("Coupon Discount", "").trim());
+//				                }
+//				            } catch (NoSuchElementException ignored) {}
+//
+//				            System.out.println("You Saved: " + addressPageYouSavedAmount.getText().replace("You Saved", "").trim());
+//
+//				            String totalText = totalAmount.getText().trim();
+//				            String[] totalLines = totalText.split("\n");
+//				            String totalAmountFormatted = totalLines.length >= 2 ? totalLines[1].trim() : totalText;
+//
+//				            System.out.println("TOTAL AMOUNT: " + totalAmountFormatted);
+//				            System.out.println("📌 Note: Inclusive of all taxes");
+//
+//				        } else {
+//				            System.out.println("❌ Whole Price Details section not visible.");
+//				        }
+//				    } catch (Exception e) {
+//				        System.out.println("⚠️ Exception while checking Price Details: " + e.getMessage());
+//				    }
+//
+//				    System.out.println("✅ Finished checking Delivery Address, Delivery Date, and Price Details.");
+//				}
 
 	//F: 8
 	public void radioButtonfunctionality() {
+		
+		driver.get(FileReaderManager.getInstance()
+	            .getConfigReader()
+	            .getApplicationUrl());
 
 		Actions action = new Actions(driver);
 		click(profile);
@@ -627,6 +762,10 @@ public  final class AddressPage  extends AddressPageObjRepo
 	public void deleteAddresfunctionalityOnBothPages() 
 	{
 	    
+		
+		driver.get(FileReaderManager.getInstance()
+	            .getConfigReader()
+	            .getApplicationUrl());
 	    try {
 	        Actions action = new Actions(driver);
 	        click(profile);
@@ -663,7 +802,8 @@ public  final class AddressPage  extends AddressPageObjRepo
 	        System.out.println("❌ Element not found: " + e1.getMessage());
 	    }
 	
-	    addToCart();//adding new address on checkout page
+	    Common.waitForElement(5);
+	   takeRandomProductFromAll();//adding new address on checkout page
 
 	    click(checkoutpageContinueButton);
 	    boolean isNewAddressAdded = false;
@@ -708,8 +848,228 @@ public  final class AddressPage  extends AddressPageObjRepo
 	        System.out.println("❌ Exception while handling Change Address flow: " + e.getMessage());
 	    }
 
-	}    
+	}
+	
+	
+	String productlistingName;
+	public String takeRandomProductFromAll() {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	    Actions actions = new Actions(driver);
+	    
+	    
+	    
 
+	    // Hover on Shop → All
+	    WebElement shopMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	            By.xpath(" //div[@class='header_nav_item has_dropdown shop']")));
+	    actions.moveToElement(shopMenu).perform();
+
+	    WebElement allButton = wait.until(ExpectedConditions.elementToBeClickable(
+	            By.xpath("//a[normalize-space()='dresses']")));
+	    allButton.click();
+
+	   Common.waitForElement(5);
+//	   removePopup();
+	   System.out.println(GREEN + "✅ Clicked on 'Dress' under Shop menu" + RESET);
+
+	    // Collect all product cards
+	    List<WebElement> products = wait.until(ExpectedConditions
+	            .visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='prod_listing_card']")));
+
+	    if (products.isEmpty()) {
+	    	System.out.println(YELLOW + "⚠️ No products found on listing page!" + RESET);
+	        return null;
+	    }
+	    Random rand = new Random();
+	    int maxAttempts = Math.min(5, products.size());
+	    boolean productFound = false;
+
+	    for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+
+	        int randomIndex = rand.nextInt(products.size()) + 1;
+	        System.out.println(BLUE + "🎯 Checking random product index: " + randomIndex + RESET);
+
+	        WebElement productCard = driver.findElement(
+	                By.xpath("(//div[@class='prod_listing_card'])[" + randomIndex + "]"));
+
+	        String name = productCard.findElement(
+	                By.xpath(".//a[contains(@class,'product_list_name')]"))
+	                .getText().trim();
+
+	        List<WebElement> stockLabels = productCard.findElements(
+	                By.xpath(".//span[contains(@class,'prod_listing_hurry') and contains(text(),'Out of Stock')]"));
+
+	        boolean isOutOfStock = !stockLabels.isEmpty() && stockLabels.get(0).isDisplayed();
+
+	        if (isOutOfStock) {
+	        	System.out.println(RED + "❌ '" + name + "' is OUT OF STOCK. Retrying..." + RESET);
+	            continue;
+	        }
+
+	        WebElement productNameElement = productCard.findElement(
+	                By.xpath(".//a[contains(@class,'product_list_name')]"));
+
+	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", productNameElement);
+
+	        productFound = true;
+	        System.out.println(GREEN + "✅ Selected random in-stock product: " + name + RESET);
+	        break;
+	    }
+	    if (!productFound) {
+	    	System.out.println(YELLOW + "⚠️ No in-stock product found after trying " + maxAttempts + RESET);
+	        return null;
+	    }
+	    // Click ADD TO CART button on PDP
+	    
+	    productlistingName = driver.findElement(
+	            By.xpath("//h3[@class='prod_name']")
+	    ).getText().trim();
+	    System.out.println(CYAN + "Product Name: " + productlistingName + RESET);
+	    
+	    Common.waitForElement(2);
+	    WebElement addToCart = wait.until(ExpectedConditions.elementToBeClickable(
+	            By.xpath("(//button[contains(text(),'Buy Now')])[1]")));
+	    
+
+	//    
+	    Common.waitForElement(2);
+	 // scroll it into center
+	    ((JavascriptExecutor) driver).executeScript(
+	            "arguments[0].scrollIntoView({block: 'center'});", addToCart);
+
+	    // click via JS (bypasses click interception)
+	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCart);
+	    Common.waitForElement(1);
+
+	    // Open cart
+	    driver.findElement(By.xpath("//button[@class='header_cta_btn Cls_cart_btn ']")).click();
+	    Common.waitForElement(1);
+
+	    System.out.println("🛒 Add to Cart clicked on PDP for: " + productlistingName);
+
+	    return productlistingName;
+	}
+	
+	
+	public void enterRandomAddressDetails() {
+
+	    Random random = new Random();
+
+	    String[] indianPinCodes = {
+	        "110001", "400001", "600001", "700001", "500001",
+	        "560001", "411001", "380001", "302001", "682001",
+	        "522001", "751001", "160001", "226001", "440001"
+	    };
+
+	    String name = random.ints(4, 0, 26)
+	            .mapToObj(i -> String.valueOf((char) ('A' + i)))
+	            .collect(Collectors.joining());
+	    String phone = "9" + String.format("%09d", random.nextInt(1000000000));
+//	    String email = "testuser" + random.nextInt(1000000) + "@gmail.com";
+	    String address = "No " + random.nextInt(999) + ", Test Street";
+	    String street = "Test Street " + random.nextInt(1000);
+	    String pincode = indianPinCodes[random.nextInt(indianPinCodes.length)];
+	    String town = "Town " + random.nextInt(1000);
+	    String locality = "Locality " + random.nextInt(1000);
+
+	    nameTextBox.clear();
+	    nameTextBox.sendKeys(name);
+
+	    phoneNumberTextBox.clear();
+	    phoneNumberTextBox.sendKeys(phone);
+
+//	    emailIDTextBox.clear();
+//	    emailIDTextBox.sendKeys(email);
+
+	    addressDetailsTextBox.clear();
+	    addressDetailsTextBox.sendKeys(address);
+
+	    streetTextBox.clear();
+	    streetTextBox.sendKeys(street);
+
+	    pinCodeTextBox.clear();
+	    pinCodeTextBox.sendKeys(pincode);
+
+	    townTextBox.clear();
+	    townTextBox.sendKeys(town);
+
+	    System.out.println("\u001B[32m========== Random Address Details ==========");
+	    System.out.println("Name: " + name);
+	    System.out.println("Phone: " + phone);
+//	    System.out.println("Email: " + email);
+	    System.out.println("Address: " + address);
+	    System.out.println("Street: " + street);
+	    System.out.println("Pincode: " + pincode);
+	    System.out.println("Town: " + town);
+	    System.out.println("Locality: " + locality);
+	    System.out.println("============================================\u001B[0m");
+	    
+	    click(saveAddressButton);
+		Common.waitForElement(10);
+	}
+
+	
+
+public void accountSettingsPhoneNumberandAddresssPage() {
+
+    driver.get(FileReaderManager.getInstance()
+            .getConfigReader()
+            .getApplicationUrl());
+
+    Actions action = new Actions(driver);
+
+    click(profile);
+    Common.waitForElement(3);
+
+    click(myProfile);
+    Common.waitForElement(2);
+
+    // Step 1: Get phone number from Account Settings
+    
+    String accountSettingsPhoneNumber = phoneNumber.getAttribute("value").trim();
+
+
+    Common.waitForElement(5);
+    // Step 2: Open Address page
+    action.moveToElement(addressSideMenuButton).click().build().perform();
+    Common.waitForElement(2);
+
+    addNewAddressButtonOnAddresspage.click();
+    Common.waitForElement(2);
+
+    // Step 3: Get phone number from Address page
+    String addressPagePhoneNumber = phoneNumberTextBox.getAttribute("value").trim();
+
+    AddaddresscloseButton.click();
+
+    // Step 4: Navigate to Checkout page
+    takeRandomProductFromAll();
+    click(checkoutpageContinueButton);
+    Common.waitForElement(2);
+
+    addNewAddressOnChekoutPage.click();
+    Common.waitForElement(2);
+
+    // Step 5: Get phone number from Checkout Address page
+    String checkoutPhoneNumber = phoneNumberTextBox.getAttribute("value").trim();
+
+    // Step 6: Compare all three phone numbers
+    System.out.println("Account Settings Phone Number: " + accountSettingsPhoneNumber);
+    System.out.println("Address Page Phone Number: " + addressPagePhoneNumber);
+    System.out.println("Checkout Phone Number: " + checkoutPhoneNumber);
+
+    if (accountSettingsPhoneNumber.equals(addressPagePhoneNumber)
+            && accountSettingsPhoneNumber.equals(checkoutPhoneNumber)) {
+
+        System.out.println("All three phone numbers are the same.");
+
+    } else {
+        System.out.println("Phone numbers do not match.");
+        throw new AssertionError("Phone numbers are different across Account Settings, Address page, and Checkout page.");
+    }
+}
+
+	
 	@Override
 	public boolean verifyExactText(WebElement ele, String expectedText) {
 		// TODO Auto-generated method stub

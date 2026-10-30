@@ -557,7 +557,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 		// ✅ STEP 1: Check if cart is already empty
 		try {
 
-			if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
+			if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
 
 				System.out.println(GREEN + 
 						"🛍️ Cart already empty. No delete action needed."
@@ -581,7 +581,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 			// Check cart empty before finding delete button
 			try {
 
-				if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
+				if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
 
 					System.out.println(GREEN +
 							"🛍️ Cart is empty. All products deleted."
@@ -635,7 +635,7 @@ public  final class BeforeLoginPage  extends BeforeLoginObjRepo{
 		// ✅ STEP 3: Final confirmation
 		try {
 
-			if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
+			if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
 
 				System.out.println(GREEN +
 						"🛍️ Cart is empty, Continue Shopping displayed."

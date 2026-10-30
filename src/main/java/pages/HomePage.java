@@ -831,7 +831,7 @@ Common.waitForElement(5);
 	    String RESET  = "\u001B[0m";
 	    String BLUE = "\u001B[34m";
 
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 //	    WebElement homeMenu = wait.until(ExpectedConditions.elementToBeClickable(
 //	            By.xpath("//a[normalize-space()='Home']") 
@@ -1544,10 +1544,10 @@ public void threadBannerINHomePage() {
     driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
     click(zlaataIndiaShopButton);
-    Common.waitForElement(10);
+//    Common.waitForElement(10);
     threadbannerClickForZlIndia();
       click(bosslady);
-      Common.waitForElement(5);
+//      Common.waitForElement(5);
 
       threadbannerClickForBl();
       
@@ -1638,10 +1638,10 @@ public void giftCard() {
 	 driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
 	    click(zlaataIndiaShopButton);
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 	    giftcardbannerClickForZL();
 	    click(bosslady);
-	    Common.waitForElement(5);
+//	    Common.waitForElement(5);
 
 	    giftcardbannerClickForBL();
 }
@@ -1873,10 +1873,10 @@ public void aboutus() {
     driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
     click(zlaataIndiaShopButton);
-    Common.waitForElement(10);
+//    Common.waitForElement(10);
     clickOnAboutUsBannerForZL();
     click(bosslady);
-    Common.waitForElement(10);
+//    Common.waitForElement(10);
     clickOnAboutUsBannerForBL();
 
 }
@@ -5146,7 +5146,7 @@ public void verifyNewInProductsCompleteFlow() throws InterruptedException {
 
     click(zlaataIndiaShopButton);
     
-    Common.waitForElement(10);
+//    Common.waitForElement(10);
 
     By sectionLocator = By.xpath(
             "//section[@data-section='new_arrivals']"
@@ -5719,10 +5719,10 @@ public void flashNotification() {
 
 	    // Click Shop button if needed
 	    click(zlaataIndiaShopButton);
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 	    flashNotificationInZL();
 	    click(bosslady);
-	    Common.waitForElement(10);
+//	    Common.waitForElement(10);
 
 	    flashNotificationInZL();
 	    

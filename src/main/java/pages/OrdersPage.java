@@ -18,6 +18,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -41,6 +42,13 @@ public final class OrdersPage extends SaleOffer50PercentageObjRepo{
 		 executor.executeScript("arguments[0].click();", element);
 
 	}
+	 
+	 String GREEN  = "\u001B[32m";
+	    String RED    = "\u001B[31m";
+	    String YELLOW = "\u001B[33m";
+	    String CYAN   = "\u001B[36m";
+	    String RESET  = "\u001B[0m";
+	    String BLUE   = "\u001B[34m";
 	
 	 public void applyThreadValue() {
 
@@ -511,7 +519,7 @@ public final class OrdersPage extends SaleOffer50PercentageObjRepo{
 		    System.out.println(LINE);
 		    
 //		    
-		    Common.waitForElement(10);
+//		    Common.waitForElement(10);
 
 		    By couponInput = By.xpath("(//input[@placeholder='Enter Coupon Code'])[1]");
 
@@ -1515,6 +1523,7 @@ public String takeRandomProductFromAll() {
     Actions actions = new Actions(driver);
     
     
+    
 
     // Hover on Shop → All
     WebElement shopMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -1527,14 +1536,14 @@ public String takeRandomProductFromAll() {
 
    Common.waitForElement(5);
    removePopup();
-    System.out.println("✅ Clicked on 'Dress' under Shop menu");
+   System.out.println(GREEN + "✅ Clicked on 'Dress' under Shop menu" + RESET);
 
     // Collect all product cards
     List<WebElement> products = wait.until(ExpectedConditions
             .visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='prod_listing_card']")));
 
     if (products.isEmpty()) {
-        System.out.println("⚠️ No products found on listing page!");
+    	System.out.println(YELLOW + "⚠️ No products found on listing page!" + RESET);
         return null;
     }
 
@@ -1594,7 +1603,7 @@ public String takeRandomProductFromAll() {
     for (int attempt = 1; attempt <= maxAttempts; attempt++) {
 
         int randomIndex = rand.nextInt(products.size()) + 1;
-        System.out.println("🎯 Checking random product index: " + randomIndex);
+        System.out.println(BLUE + "🎯 Checking random product index: " + randomIndex + RESET);
 
         WebElement productCard = driver.findElement(
                 By.xpath("(//div[@class='prod_listing_card'])[" + randomIndex + "]"));
@@ -1609,7 +1618,7 @@ public String takeRandomProductFromAll() {
         boolean isOutOfStock = !stockLabels.isEmpty() && stockLabels.get(0).isDisplayed();
 
         if (isOutOfStock) {
-            System.out.println("❌ '" + name + "' is OUT OF STOCK. Retrying...");
+        	System.out.println(RED + "❌ '" + name + "' is OUT OF STOCK. Retrying..." + RESET);
             continue;
         }
 
@@ -1619,11 +1628,11 @@ public String takeRandomProductFromAll() {
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", productNameElement);
 
         productFound = true;
-        System.out.println("✅ Selected random in-stock product: " + name);
+        System.out.println(GREEN + "✅ Selected random in-stock product: " + name + RESET);
         break;
     }
     if (!productFound) {
-        System.out.println("⚠️ No in-stock product found after trying " + maxAttempts);
+    	System.out.println(YELLOW + "⚠️ No in-stock product found after trying " + maxAttempts + RESET);
         return null;
     }
     // Click ADD TO CART button on PDP
@@ -1631,7 +1640,7 @@ public String takeRandomProductFromAll() {
     productlistingName = driver.findElement(
             By.xpath("//h3[@class='prod_name']")
     ).getText().trim();
-    System.out.println("Product Name: " + productlistingName);
+    System.out.println(CYAN + "Product Name: " + productlistingName + RESET);
     
     Common.waitForElement(2);
     WebElement addToCart = wait.until(ExpectedConditions.elementToBeClickable(
@@ -1657,53 +1666,145 @@ public String takeRandomProductFromAll() {
     return productlistingName;
 }
 
+//public void deleteAllProductsFromCart() {
+//	driver.get(FileReaderManager.getInstance()
+//            .getConfigReader()
+//            .getApplicationUrl());
+//
+//    // Open cart
+//    driver.findElement(By.xpath("//button[@class='header_cta_btn Cls_cart_btn ']")).click();
+//    Common.waitForElement(1);
+////    Common.waitForElement(10);
+//
+//    // ✅ STEP 1: Check if cart is already empty
+//    try {
+//        if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
+//            System.out.println("🛍️ Cart already empty. No delete action needed.");
+//            
+//  WebElement brand = driver.findElement(By.xpath("//a[@class='brand_switch ']"));
+//            
+//            brand.click();
+//            return; // Stop method immediately
+//            
+//          
+//        }
+//    } catch (NoSuchElementException ignored) {
+//    	System.out.println("Cart is NOT empty, proceed to delete");
+//        // Cart is NOT empty, proceed to delete
+//    }
+//
+//    // ✅ STEP 2: Delete products one by one
+//    while (true) {
+//        try {
+//            WebElement deleteBtn = driver.findElement(By.xpath("//div[@title='Delete']"));
+//            deleteBtn.click();
+//            System.out.println("🗑️ Product deleted");
+//            Common.waitForElement(1); 
+//        } catch (NoSuchElementException e) {
+//            System.out.println("✅ No more products to delete.");
+//            break;
+//        } catch (Exception e) {
+//            System.out.println("⚠️ Error while deleting: " + e.getMessage());
+//            break;
+//        }
+//    }
+//
+//    // ✅ STEP 3: Final confirmation
+//    try {
+//        if (driver.findElement(By.xpath("//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']")).isDisplayed()) {
+//            System.out.println("🛍️ Cart is empty, Continue Shopping displayed.");
+//        }
+//    } catch (NoSuchElementException e) {
+//        System.out.println("ℹ️ Bag is not empty message not found.");
+//    }
+//    
+//    
+//  WebElement brand = driver.findElement(By.xpath("//a[@class='brand_switch ']"));
+//  
+//  brand.click();
+//  
+//
+//}
+//
+
 public void deleteAllProductsFromCart() {
-	driver.get(FileReaderManager.getInstance()
+
+    driver.get(FileReaderManager.getInstance()
             .getConfigReader()
             .getApplicationUrl());
 
     // Open cart
-    driver.findElement(By.xpath("//button[@class='header_cta_btn Cls_cart_btn ']")).click();
-    Common.waitForElement(1);
-    Common.waitForElement(10);
+    driver.findElement(By.xpath(
+            "//button[@class='header_cta_btn Cls_cart_btn ']")).click();
 
-    // ✅ STEP 1: Check if cart is already empty
+    Common.waitForElement(1);
+
+    // STEP 1: Check if the cart is already empty
     try {
-        if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
-            System.out.println("🛍️ Cart already empty. No delete action needed.");
-            return; // Stop method immediately
+        if (driver.findElement(By.xpath(
+                "//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']"))
+                .isDisplayed()) {
+
+            System.out.println("🛍️ Cart is already empty. No deletion is required.");
+
+            // Click the brand button before returning
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebElement brand = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//a[@data-brand='bossLady']")));
+            brand.click();
+
+            return;
         }
-    } catch (NoSuchElementException ignored) {
-    	System.out.println("Cart is NOT empty, proceed to delete");
-        // Cart is NOT empty, proceed to delete
+
+    } catch (NoSuchElementException e) {
+        System.out.println("Cart is not empty. Proceeding with deletion.");
     }
 
-    // ✅ STEP 2: Delete products one by one
+    // STEP 2: Delete products one by one
     while (true) {
         try {
-            WebElement deleteBtn = driver.findElement(By.xpath("//div[@title='Delete']"));
+            WebElement deleteBtn = driver.findElement(
+                    By.xpath("//div[@title='Delete']"));
+
             deleteBtn.click();
-            System.out.println("🗑️ Product deleted");
-            Common.waitForElement(1); 
+
+            System.out.println("🗑️ Product deleted successfully.");
+
+            Common.waitForElement(1);
+
         } catch (NoSuchElementException e) {
             System.out.println("✅ No more products to delete.");
             break;
+
         } catch (Exception e) {
-            System.out.println("⚠️ Error while deleting: " + e.getMessage());
+            System.out.println(
+                    "⚠️ Error while deleting the product: " + e.getMessage());
             break;
         }
     }
 
-    // ✅ STEP 3: Final confirmation
+    // STEP 3: Verify that the cart is empty
     try {
-        if (driver.findElement(By.xpath("//a[@class='empty_bag_shop_btn btn___2']")).isDisplayed()) {
-            System.out.println("🛍️ Cart is empty, Continue Shopping displayed.");
-        }
-    } catch (NoSuchElementException e) {
-        System.out.println("ℹ️ Bag is not empty message not found.");
-    }
-}
+        if (driver.findElement(By.xpath(
+                "//*[translate(normalize-space(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='your bag is empty']"))
+                .isDisplayed()) {
 
+            System.out.println(
+                    "🛍️ Cart is empty. The empty cart message is displayed.");
+
+        } else {
+            System.out.println("❌ Cart is not empty.");
+        }
+
+    } catch (NoSuchElementException e) {
+        System.out.println("❌ Cart empty message was not found.");
+    }
+
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    WebElement brand = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//a[@data-brand='bossLady']")));
+    brand.click();
+}
 
 
 public void verifyOrderCancellation() {
