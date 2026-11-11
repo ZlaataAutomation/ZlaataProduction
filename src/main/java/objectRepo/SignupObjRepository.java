@@ -69,5 +69,15 @@ public abstract class SignupObjRepository extends BasePage {
 	protected List <WebElement> otpenterBox;
 	
 	
+	@FindBy(xpath = "//input[@id='reg_name' and @placeholder='Name']")
+	protected WebElement nameTextBoxLabel;
+	
+	@FindBy(xpath = "//input[@id='reg_contact' and @placeholder='Phone Number']")
+	protected WebElement phoneNumberTextTextBoxLabel;
+	
+	@FindBy(xpath = "//input[@id='reg_email' and @placeholder='Email (Optional)']")
+	protected WebElement emailIdTextBoxLabel;
+	
+	
 	
 }

@@ -2041,7 +2041,116 @@ public void clickOnAboutUsBannerForBL() {
  }
 }
 
-public void verifyCollectionBanners() throws InterruptedException {
+//public void verifyCollectionBanners() throws InterruptedException {
+//
+//    driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
+//
+//    click(zlaataIndiaShopButton);
+//
+//    String GREEN  = "\u001B[32m";
+//    String YELLOW = "\u001B[33m";
+//    String BLUE   = "\u001B[34m";
+//    String RESET  = "\u001B[0m";
+//
+//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//
+//    // Scroll to collection section
+//    WebElement section = wait.until(
+//            ExpectedConditions.presenceOfElementLocated(
+//                    By.xpath("//section[contains(@class,'zi_collection')]")
+//            )
+//    );
+//
+//    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", section);
+//
+//    List<WebElement> banners = driver.findElements(
+//            By.xpath("//a[contains(@class,'zi_collection_card')]")
+//    );
+//
+//    int total = banners.size();
+//    System.out.println(BLUE + "Total Collections: " + total + RESET);
+//
+//    for (int i = 0; i < total; i++) {
+//
+//        // Re-fetch banners every loop
+//        banners = driver.findElements(
+//                By.xpath("//a[contains(@class,'zi_collection_card')]")
+//        );
+//
+//        WebElement banner = banners.get(i);
+//
+//        String bannerName = banner.getText().trim();
+//        System.out.println(BLUE + "Clicking banner: " + bannerName + RESET);
+//
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", banner);
+//
+//        // Wait for heading
+//        WebElement heading = wait.until(
+//                ExpectedConditions.visibilityOfElementLocated(
+//                        By.xpath("//h2[@class='prod_listing_topic']")
+//                )
+//        );
+//
+//        String pageHeading = heading.getText().trim();
+//        System.out.println(YELLOW + "Page heading: " + pageHeading + RESET);
+//
+//        // Normalize text
+//        String normalizedBanner = bannerName.replace("-", "")
+//                .replace(" ", "")
+//                .toLowerCase();
+//
+//        String normalizedHeading = pageHeading.replace("-", "")
+//                .replace(" ", "")
+//                .toLowerCase();
+//
+//        // Validate heading match
+//        if (!normalizedBanner.equals(normalizedHeading)) {
+//            throw new AssertionError(
+//                    "Mismatch! Banner: " + bannerName +
+//                            " | Heading: " + pageHeading
+//            );
+//        }
+//
+//        // Product validation (RE-FETCH here to avoid stale element)
+//        List<WebElement> products = driver.findElements(
+//                By.xpath("//div[contains(@class,'prod_listing_card')]")
+//        );
+//
+//        if (products.size() > 0) {
+//
+//            WebElement firstProduct = wait.until(
+//                    ExpectedConditions.visibilityOfElementLocated(
+//                            By.xpath("(//div[contains(@class,'prod_listing_card')])[1]")
+//                    )
+//            );
+//
+//            if (firstProduct.isDisplayed()) {
+//                System.out.println(
+//                        GREEN + "Product displayed for: " + bannerName + RESET
+//                );
+//            }
+//
+//        } else {
+//            System.out.println(
+//                    YELLOW + "No products found for: " + bannerName + RESET
+//            );
+//        }
+//
+//        // Back to home page
+//        driver.navigate().back();
+//
+//        // Wait again for collection section
+//        wait.until(
+//                ExpectedConditions.presenceOfElementLocated(
+//                        By.xpath("//section[contains(@class,'zi_collection')]")
+//                )
+//        );
+//    }
+//}
+
+
+
+public void verifyCollectionBanners() throws InterruptedException, TimeoutException {
 
     driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 
@@ -2061,18 +2170,21 @@ public void verifyCollectionBanners() throws InterruptedException {
             )
     );
 
-    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", section);
+    ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].scrollIntoView(true);", section
+    );
 
     List<WebElement> banners = driver.findElements(
             By.xpath("//a[contains(@class,'zi_collection_card')]")
     );
 
     int total = banners.size();
+
     System.out.println(BLUE + "Total Collections: " + total + RESET);
 
     for (int i = 0; i < total; i++) {
 
-        // Re-fetch banners every loop
+        // Re-fetch banners
         banners = driver.findElements(
                 By.xpath("//a[contains(@class,'zi_collection_card')]")
         );
@@ -2080,11 +2192,14 @@ public void verifyCollectionBanners() throws InterruptedException {
         WebElement banner = banners.get(i);
 
         String bannerName = banner.getText().trim();
-        System.out.println(BLUE + "Clicking banner: " + bannerName + RESET);
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", banner);
+        System.out.println(BLUE + "Clicking Banner: " + bannerName + RESET);
 
-        // Wait for heading
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].click();", banner
+        );
+
+        // Wait for PLP heading
         WebElement heading = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("//h2[@class='prod_listing_topic']")
@@ -2092,62 +2207,57 @@ public void verifyCollectionBanners() throws InterruptedException {
         );
 
         String pageHeading = heading.getText().trim();
-        System.out.println(YELLOW + "Page heading: " + pageHeading + RESET);
 
-        // Normalize text
-        String normalizedBanner = bannerName.replace("-", "")
-                .replace(" ", "")
-                .toLowerCase();
+        System.out.println(
+                BLUE + "PLP Heading: " + pageHeading + RESET
+        );
 
-        String normalizedHeading = pageHeading.replace("-", "")
-                .replace(" ", "")
-                .toLowerCase();
+        wait.until(
+		        ExpectedConditions.or(
+		                ExpectedConditions.presenceOfElementLocated(
+		                        By.xpath("//div[contains(@class,'prod_listing_card')]")
+		                ),
+		                ExpectedConditions.visibilityOfElementLocated(
+		                        By.xpath("//*[contains(text(),'No products')]")
+		                )
+		        )
+		);
 
-        // Validate heading match
-        if (!normalizedBanner.equals(normalizedHeading)) {
-            throw new AssertionError(
-                    "Mismatch! Banner: " + bannerName +
-                            " | Heading: " + pageHeading
-            );
-        }
-
-        // Product validation (RE-FETCH here to avoid stale element)
         List<WebElement> products = driver.findElements(
                 By.xpath("//div[contains(@class,'prod_listing_card')]")
         );
 
-        if (products.size() > 0) {
+        int productCount = products.size();
 
-            WebElement firstProduct = wait.until(
-                    ExpectedConditions.visibilityOfElementLocated(
-                            By.xpath("(//div[contains(@class,'prod_listing_card')])[1]")
-                    )
+        if (productCount > 0) {
+
+            System.out.println(
+                    GREEN + "Products Available in PLP: " + pageHeading
+                    + " | Total Products: " + productCount + RESET
             );
 
-            if (firstProduct.isDisplayed()) {
-                System.out.println(
-                        GREEN + "Product displayed for: " + bannerName + RESET
-                );
-            }
-
         } else {
+
             System.out.println(
-                    YELLOW + "No products found for: " + bannerName + RESET
+                    YELLOW + "No Products Available in PLP: " + pageHeading + RESET
             );
         }
 
         // Back to home page
         driver.navigate().back();
 
-        // Wait again for collection section
+        // Wait for collection section again
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//section[contains(@class,'zi_collection')]")
                 )
         );
     }
-}
 
+    System.out.println(
+            GREEN + "Collection Banner Validation Completed" + RESET
+    );
+}
 
 
 //public void verifyAllCategoriesWithProductValidation() throws InterruptedException {

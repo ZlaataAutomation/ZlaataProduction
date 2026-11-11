@@ -162,7 +162,7 @@ public class HomePageStepdef {
 
 
 	@Given("the user verifies that the collection  banner  is available on the Home Page for zlaata India")
-	public void the_user_verifies_that_the_collection_banner_is_available_on_the_home_page_for_zlaata_india() throws InterruptedException {
+	public void the_user_verifies_that_the_collection_banner_is_available_on_the_home_page_for_zlaata_india() throws InterruptedException, TimeoutException {
 		home.verifyCollectionBanners();
 	}
 

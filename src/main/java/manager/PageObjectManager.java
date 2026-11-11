@@ -34,6 +34,8 @@ public class PageObjectManager {
 	private GiftCardPage giftCard;
 	private GuestLoginPage guest;
 	private FooterLogoPage logo;
+	private HeaderLogoPage headlogo;
+	private ContactUsPage contact;
    
 
     public PageObjectManager(WebDriver driver) {
@@ -137,6 +139,14 @@ public class PageObjectManager {
 	}
 	public FooterLogoPage getFooterLogoPage() {
 		return (logo == null) ? logo = new FooterLogoPage(driver) : logo;
+	}
+	
+	public HeaderLogoPage getHeaderLogoPage() {
+		return (headlogo ==null) ? headlogo = new HeaderLogoPage(driver) : headlogo;
+	}
+	
+	public ContactUsPage getContactUsPage() {
+		return (contact == null)  ? contact = new ContactUsPage(driver) : contact;
 	}
 	
 }
