@@ -37,7 +37,7 @@ public abstract class  GuestLoginObjRepo extends BasePage {
 	@FindBy(xpath = "//span[@class='error__msg Cls_form_street_error street_error_msg active']")
 	protected WebElement validationStreet;
 
-	@ FindBy(xpath = "//span[@class='error__msg pincode_error_msg active']")
+	@ FindBy(xpath = "//span[@class='error__msg Cls_form_pincode_error active']")
 	protected WebElement validationPincode;
 
 	@FindBy(xpath = "//span[@class='error__msg Cls_form_locality_town_error locality_error_msg active']")
@@ -60,7 +60,7 @@ public abstract class  GuestLoginObjRepo extends BasePage {
 	protected WebElement guestUserPalceOrderButton;
 
 
-
+	
 	@FindBy(id = "addressName")
 	protected WebElement nameTextBox;
 
@@ -118,6 +118,11 @@ public abstract class  GuestLoginObjRepo extends BasePage {
 	
 	@FindBy(xpath = "address_card_edit_btn Cls_address_card_edit_btn")
 	protected WebElement editButtonInGuestLoginAddressPage;
+	
+	
+	@FindBy(xpath = "//button[@class='address_card_edit_btn Cls_address_card_edit_btn']")
+	protected WebElement editButtonInGuestUser;
+	
 
 
 }

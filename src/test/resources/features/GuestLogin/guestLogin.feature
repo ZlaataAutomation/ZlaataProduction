@@ -7,7 +7,7 @@ Feature: GuestLogin
   #Expected: Gift card  sanity 
   #============================================================================
   
- 	
+ @guest	
   @Sanity
 	@TC_UI_Zlaata_GL_01
 Scenario Outline: TC_UI_Zlaata_GL_01 | Verify that the Guest Login button is available in the Login popup when clicking Place Order on the Checkout page | "<TD_ID>"

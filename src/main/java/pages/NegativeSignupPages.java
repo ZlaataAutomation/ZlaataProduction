@@ -37,6 +37,10 @@ public final class NegativeSignupPages extends SignupObjRepository {
 
 		return this.wait.until((d) -> this.accessCode.isDisplayed());
 	}
+	
+	
+	String CYAN = "\u001B[36m";
+	String RESET = "\u001B[0m";
 
 	public void launchZltV7() {
 
@@ -494,6 +498,16 @@ public void verifyLogOut() {
 	//
 	//		
 	//	}
+	
+	
+	public void verifySignUpTextBoxPlaceholders() {
+
+	    System.out.println(CYAN + "Name Placeholder: " + nameTextBoxLabel.getAttribute("placeholder") + RESET);
+
+	    System.out.println(CYAN + "Phone Number Placeholder: " + phoneNumberTextTextBoxLabel.getAttribute("placeholder") + RESET);
+
+	    System.out.println(CYAN + "Email Placeholder: " + emailIdTextBoxLabel.getAttribute("placeholder") + RESET);
+	}
 
 
 	@Override

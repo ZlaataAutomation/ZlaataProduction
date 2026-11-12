@@ -108,7 +108,7 @@ public void validateAllFields() {
 
  
 
-    if (validationName.getText().equals("Name should be between 3 and 50 characters.")) {
+    if (validationName.getText().equals("Name must be between 3 and 50 characters.")) {
         System.out.println(GREEN + "✅ PASS: Name validation" + RESET);
     } else {
         System.out.println(RED + "❌ FAIL: Name validation" + RESET);
@@ -312,7 +312,7 @@ public void enterRandomAddressDetails() {
     String town = "Town " + random.nextInt(1000);
     String locality = "Locality " + random.nextInt(1000);
 
-    nameTextBox.clear();
+   // nameTextBox.clear();
     nameTextBox.sendKeys(name);
 
     phoneNumberTextBox.clear();
@@ -364,6 +364,10 @@ public void enterRandomAddressDetails() {
 }
  
  public void printExistingAddressDetails() {
+	 
+	
+	 editButtonInGuestUser.click();
+	
 
 	    System.out.println("\u001B[34m========== Existing Address Details ==========\u001B[0m");
 

@@ -182,4 +182,34 @@ Scenario Outline: TC_UI_Zlaata_Signup_22 | User enters already verified mail |"<
     Examples:
       | TD_ID                  |
       | TD_UI_Zlaata_Signup_22 |
-
+      
+      
+      
+#@SignUp
+#@Sanity
+#@TC_UI_Zlaata_Signup_23
+#
+#Scenario Outline: TC_UI_Zlaata_Signup_23 | Verify that the user is able to click on Terms of Use and Privacy Policy in the Signup popup | "<TD_ID>"
+#
+    #Given User in SignUp popup
+#
+    #Examples:
+      #| TD_ID                  |
+      #| TD_UI_Zlaata_Signup_23 |
+      #
+      #
+   #@SignUp
+#@Sanity
+#@TC_UI_Zlaata_Signup_24
+#
+#Scenario Outline: TC_UI_Zlaata_Signup_24 | Verify that all text box labels are displayed in the Signup popup | "<TD_ID>"
+#
+    #Given User in SignUp popup and verify that all text box labels are displayed
+#
+    #Examples:
+      #| TD_ID                  |
+      #| TD_UI_Zlaata_Signup_24
+      #
+      #
+      #
+      #	 |

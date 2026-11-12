@@ -13,5 +13,8 @@ public abstract class FooterLogoPageObjRepo  extends  BasePage {
 	@FindBy(xpath = "//a[@class='footer_zlaata_logo']")
 	protected WebElement footerZlaataLogo;
 	
+	@FindBy(xpath = "//h2[@class='landing_page_title' and text()='BOSS LADY']")
+	protected WebElement clickOnBossladyShopNowButton;
+	
 
 }

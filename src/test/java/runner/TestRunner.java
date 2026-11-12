@@ -16,9 +16,9 @@ features = {"src/test/resources/features/"},
 glue = "stepDef",	
 monochrome = true,	
 dryRun = false,
-tags="@Home"
+tags="@guest"
 
-
+	
 )
 
 		
